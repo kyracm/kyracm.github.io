@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BIOS 668</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='style.css' />
+    <link href='https://fonts.googleapis.com/css?family=Cairo' rel='stylesheet'>
+    <script src="jquery-3.3.1.js"></script>
+    <script src="simple-statistics.min.js"></script>
+    <script src="script.js"></script>
+
+</head>
+
+<body>
+    <h1>Study Simulator</h1>
+
+
+    <div class="tab">
+        <button class="tablinks" id="sampsizetaboption">Sample Size Calculator</button>
+        <button class="tablinks" id="helptaboption">Help</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="sampsizetab" class="tabcontent">
+        <div class="parameters">
+            <div class="parameterChoices">
+                <h2>Desired parameters</h2>
+
+                <div class="paramOptions" id="alpha">Alpha level:
+                    <input class="alpha_range" id="alpha" type="range" value="0.05" min="0.00" max="1.00" step="0.01">
+                    <span class="alpha_value" id="alphaValue"></span>
+                </div>
+                <div class="paramOptions" id="power">Power:
+                    <input class="power_range" id="power" type="range" value="80" min="0" max="100">
+                    <span class="power_value" id="powerValue"></span>
+                </div>
+                <div class="paramOptions" id="trtGroups">Treatment Groups:
+                    <div class="trtGroup_A">
+                        <textarea class="textAreaA" placeholder="Treatment A"></textarea>
+                    </div>
+                    <div class="trtGroup_B">
+                        <textarea class="textAreaB" placeholder="Treatment B"></textarea>
+                    </div>
+                </div>
+                <div class="paramOptions" id=typeOfTest>What type of test are you interested in simulating?
+                    <select class="testTypes">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option value="noninf">Non-Inferiority Test</option>
+                        <option value="equiv">Equivalence Test</option>
+                        <option value="sup">Superiority Test</option>
+                    </select> <br>
+                    <span id="testDisplayNull">H<sub>0</sub>:</span><br>
+                    <span id="testDisplayAlt">H<sub>a</sub>:</span>
+                </div>
+                <div class="paramOptions" id=hypotheses>
+                </div>
+            </div>
+            <div class="buttons">
+                <button id="resetOptions" type="button" class="button">Reset Parameters</button>
+                <button id="simulate" type="button" class="button">Simulate Study</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="helptab" class="tabcontent" style="display: none">
+        <div class="helpSection">
+            <input class="searchBar" name="keyword" type="text" list="668terms" placeholder="Search a keyword here">
+            <datalist id="668terms">
+            </datalist>
+            <div class="helpDefinitions">
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
