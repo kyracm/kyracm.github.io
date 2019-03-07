@@ -62,7 +62,6 @@ h2 {
     width: 25%; 
     font-size: 15pt; 
     margin: 0; 
-    /* border: solid thin #C6C3B9;  */
     padding-left: 1%; 
     padding-right: 1%; 
     background-color: #C6C3B9;
@@ -75,7 +74,6 @@ h2 {
     width: 25%; 
     font-size: 15pt; 
     margin: 0; 
-    /* border: solid thin #C6C3B9;  */
     padding-left: 1%; 
     padding-right: 1%; 
     overflow-y: scroll; 
@@ -97,40 +95,7 @@ h2 {
     font-size: 14.5pt; 
 }
 
-.nullHyp {
-    background-color: #ECEDED;
-    border-color: #615E65;
-    color: #615E65;
-    border: 3px solid thin; 
-    width: 20%;
-    margin-left: 5%;
-    height: 25px;   
-    margin-right: 0%;
-}
-
-.stddevtext {
-    background-color: #ECEDED;
-    border-color: #615E65;
-    color: #615E65;
-    border: 3px solid thin; 
-    width: 20%;
-    margin-left: 5%;
-    height: 25px;   
-    margin-right: 0%;
-}
-
-.altHyp {
-    background-color: #ECEDED;
-    border-color: #615E65;
-    color: #615E65;
-    border: 3px solid thin; 
-    width: 20%;
-    margin-left: 5%;
-    height: 25px;   
-    margin-right: 0%;
-}
-
-.deltaText{
+.textNum {
     background-color: #ECEDED;
     border-color: #615E65;
     color: #615E65;
@@ -147,12 +112,16 @@ h2 {
     color: #615E65;
     font-size: 10pt; 
     border: 3px solid thin; 
-    width: 50%;
+    width: 65%;
     height: 100%; 
     display: inline-block;
 }
 
 #testDisplayNull {
+    margin-left: 5%;
+}
+
+#n_ratio {
     margin-left: 5%;
 }
 
@@ -219,8 +188,20 @@ h2 {
     text-decoration: bold;
 }
 
+.term {
+    text-decoration: bold; 
+}
+
 .helpDefinitions .def {
     margin-left: 5%; 
     font-size: 14.5pt; 
 
+}
+
+.power_range:hover {
+    cursor: pointer;
+}
+
+.alpha_range:hover {
+    cursor: pointer; 
 }

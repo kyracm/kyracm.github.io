@@ -21,7 +21,6 @@
         <button class="tablinks" id="helptaboption">Help</button>
     </div>
 
-    <!-- Tab content -->
     <div id="sampsizetab" class="tabcontent">
         <div class="parameters">
             <div class="parameterChoices">
@@ -46,12 +45,16 @@
                 <div class="paramOptions" id=typeOfTest>What type of test are you interested in simulating?
                     <select class="testTypes">
                         <option disabled selected value> -- select an option -- </option>
-                        <option value="noninf">Non-Inferiority Test</option>
-                        <option value="equiv">Equivalence Test</option>
-                        <option value="sup">Superiority Test</option>
+                        <option value="noninf1">One-Sample Non-Inferiority Test</option>
+                        <option value="equiv1">One-Sample Equivalence Test</option>
+                        <option value="sup1">One-Sample Superiority Test</option>
+                        <option value="noninf2">Two-Sample Non-Inferiority Test</option>
+                        <option value="equiv2">Two-Sample Equivalence Test</option>
+                        <option value="sup2">Two-Sample Superiority Test</option>
                     </select> <br>
                     <span id="testDisplayNull">H<sub>0</sub>:</span><br>
-                    <span id="testDisplayAlt">H<sub>a</sub>:</span>
+                    <span id="testDisplayAlt">H<sub>a</sub>:</span><br>
+                    <span id="n_ratio" style="display: none"></span>
                 </div>
                 <div class="paramOptions" id=hypotheses>
                 </div>
