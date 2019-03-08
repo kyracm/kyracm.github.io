@@ -23,6 +23,9 @@ h2 {
     margin: 0pt;
 }
 
+/* .alpha_value:hover {
+
+} */
 
 .tablinks {
     position: absolute; 
@@ -78,7 +81,29 @@ h2 {
     padding-right: 1%; 
     overflow-y: scroll; 
     background-color: #C6C3B9;
+}
 
+.mainBody {
+    position: absolute; 
+    top: 20%;
+    height: 75%; 
+    width: 68%; 
+    left: 29%; 
+    font-size: 15pt; 
+    margin: 0; 
+    padding-left: 1%; 
+    padding-right: 1%; 
+    /* overflow-y: scroll;  */
+    background-color: #C6C3B9;
+}
+
+#samplesize {
+    height: 35%; 
+}
+
+#statisticssection {
+    height: 65%; 
+    overflow-y: scroll; 
 }
 
 .parameterChoices {
@@ -204,4 +229,8 @@ h2 {
 
 .alpha_range:hover {
     cursor: pointer; 
+}
+
+#sampsizenum {
+    margin-top: 0%; 
 }
