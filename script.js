@@ -38,7 +38,7 @@ function NormSInv(p) {
 $(document).ready(function () {
 
     var alpha = 0.05;
-    var beta = 0.00;
+    var beta = 0.20;
     var power = 80;
     var trtGroupAName = "Treatment A";
     var trtGroupBName = "Treatment B";
@@ -132,8 +132,51 @@ $(document).ready(function () {
         {
             "term": "Maximum Tolerated Dose (MTD)",
             "definition": "Usually, the therapeutic effect of a drug is believed to increase with dose. However, the dose of a study drug a subject can receive is often limited by toxicity. Hence the target dose is the maximum dose that is tolerable. The maximum tolerated dose is the dose such that Pr(dose limiting toxicity at MTD)=&gamma;, where &gamma; is the target DLT rate"
+        },
+        {
+            "term": "Type I Error",
+            "definition": "the rejection of a true null hypothesis, also known as a 'false positive' finding or conclusion. Pr(p<.05|H<sub>0</sub>) Aim to keep type I error rate under &alpha;"
+        },
+        {
+            "term": "Type II Error",
+            "definition": "the failure to reject a false null hypothesis, also known as a 'false negative' finding or conclusion. P(p>.05|H<sub>a</sub>). Aim to keep type II error rate under &beta;"
+        },
+        {
+            "term": "Alpha (&alpha;)",
+            "definition": "The rate you wish to keep type I error under."
+        },
+        {
+            "term": "Beta (&beta;)",
+            "definition": "The rate you wish to keep type II rate under. Equal to 1-power."
+        },
+        {
+            "term": "Non inferiority margin (&delta;)",
+            "definition": "Definition of non-inferiority often set by clinically relevant differences. Margins should be specified a priori and approved by the FDA."
+        },
+        {
+            "term": "Standard deviation",
+            "definition": "A measure that is used to quantify the amount of variation or dispersion of a set of data values from the mean."
+        },
+        {
+            "term": "Cross sectional study",
+            "definition": "A clinical trial design in which groups are assigned to study conditions and different members are observed at each measurement occasion. This is the best design when the research question involves change within an entire population."
+        },
+        {
+            "term": "Cohort study",
+            "definition": "A clinical trial design in which groups are assigned to study conditions and the same members are observed at each measurement occasion. This is the best design when the research question involves change within specific members of the population."
+        },
+        {
+            "term": "Starting dose",
+            "definition": "The murine LD10 is the dose with approximately 10% mortality established in preclinical studies in animals. One-tenth or two-tenths of the equivalent of LD10, expressed in milligrams per meter squared, is often used as a starting dose in Phase I oncology trials."
+        },
+        {
+            "term": "Dose level selection",
+            "definition": "The dose levels are usually selected by the investigational team prior to the onset of the trial. The set of doses can be chosen according to the modified Fibonacci sequence in which higher escalation steps have decreasing relative increments."
+        },
+        {
+            "term": "Mean difference",
+            "definition": "The difference of the mean value of interest between two treatment groups."
         }
-
     ]
 
 
@@ -296,31 +339,71 @@ $(document).ready(function () {
                 let zalphaover2 = NormSInv(1-(alpha/2))
                 let kplusone = parseFloat(nratio) + 1;
                 let naNum = kplusone * Math.pow(sigma,2) * Math.pow((zbeta+zalphaover2),2);
-                let naden = Math.pow(meandiff,2)
-                
+                let naden = Math.pow(meandiff,2)                
                 n_a=Math.ceil(naNum/naden);
                 n_b=Math.ceil(n_a/parseFloat(nratio));
                 n_total = n_a+n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                }
             } else if (testType == "noninf2") {
+                let zbeta = NormSInv(1-beta)
+                let zalpha = NormSInv(1-alpha)
+                let kplusone = parseFloat(nratio) + 1;
+                let naNum = kplusone * Math.pow(sigma,2) * Math.pow((zbeta+zalpha),2);
+                let naden = Math.pow(meandiff-delta,2)
+                n_a=Math.ceil(naNum/naden);
+                n_b=Math.ceil(n_a/parseFloat(nratio));
+                n_total = n_a+n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                }
             } else if (testType == "equiv2") {
+                let zbeta = NormSInv(1-beta)
+                let zalpha = NormSInv(1-alpha)
+                let kplusone = parseFloat(nratio) + 1;
+                let naNum = kplusone * Math.pow(sigma,2) * Math.pow((zbeta+zalpha),2);
+                let naden = Math.pow(delta - absmeandiff,2)
+                n_a=Math.ceil(naNum/naden);
+                n_b=Math.ceil(n_a/parseFloat(nratio));
+                n_total = n_a+n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
-            } else if (testType == "sup1") {
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                }
+                } else if (testType == "sup1") {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                }
             } else if (testType == "noninf1") {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {    
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                }
             } else if (testType == "equiv1") {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#samplesize').append("<p id = 'sampsizenum'>Please select a test and fill out the appropriate parameter values.</p>")
+                $('#samplesize').append("<p id = 'sampsizenum'>Please select a test and fill out the parameter values.</p>")
+                
             }
     
         });
