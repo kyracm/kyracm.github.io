@@ -54,10 +54,11 @@ $(document).ready(function () {
     var n_a = 0;
     var n_b = 0;
     var n_total = 0; 
+    var selectedSigma = "powerone"
 
     var nullhypothesishtmldiv = '<div class="nullHypothesis">&mu;: <br> <textarea class="textNum" id="nullHyp" placeholder="0"></textarea> </div>'
     var althypothesishtmldiv = '<div class="altHypothesis">&mu;<sub>0</sub>: <br> <textarea class="textNum" id="altHyp" placeholder="0"></textarea> </div>'
-    var stddevhtmldiv = '<div class="stddev">&sigma;: <br> <textarea class="textNum" id="stddevtext" placeholder="0"></textarea> </div>'
+    var stddevhtmldiv = '<div class="stddev"><span class="stddevpower" id="sigmapowerone">&sigma;</span><span id="bar"> | <span><span class="stddevpower" id="sigmapowertwo">&sigma;<sup>2</sup></span>: <br> <textarea class="textNum" id="stddevtext" placeholder="0"></textarea> </div>'
     var deltahtmldiv = '<div class="delta">&delta;: <br> <textarea class="textNum" id="deltaText" placeholder="0"></textarea> </div>'
     var meandiffhtmldiv = '<div class="meandiff">&mu;<sub>0</sub>-&mu;<sub>1</sub>: <br> <textarea class = "textNum" id="meandiffText" placeholder="0"></textarea></div>'
     var absmeandiffhtmldiv = '<div class="absmeandiff">|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: <br> <textarea class = "textNum" id="absmeandiffText" placeholder="0"></textarea></div>'
@@ -148,6 +149,9 @@ $(document).ready(function () {
             if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
                 $('#n_ratio').toggle()
             }
+            if ($('.trtGroup_B').attr('style') != "display: none" && $('.trtGroup_B').attr('style') != "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
             $('#testDisplayNull').html("H<sub>0</sub>: &mu; - &mu;<sub>0</sub> &lt; &delta;")
             $('#testDisplayAlt').html("H<sub>a</sub>: &mu; - &mu;<sub>0</sub> &ge; &delta;")
             $('#hypotheses').append(nullhypothesishtmldiv);
@@ -160,6 +164,9 @@ $(document).ready(function () {
             if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
                 $('#n_ratio').toggle()
             }
+            if ($('.trtGroup_B').attr('style') != "display: none" && $('.trtGroup_B').attr('style') != "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
             $('#hypotheses').append(nullhypothesishtmldiv);
             $('#hypotheses').append(althypothesishtmldiv);
             $('#hypotheses').append(stddevhtmldiv);
@@ -169,6 +176,9 @@ $(document).ready(function () {
             if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
                 $('#n_ratio').toggle()
             }
+            if ($('.trtGroup_B').attr('style') != "display: none" && $('.trtGroup_B').attr('style') != "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
             $('#hypotheses').append(nullhypothesishtmldiv);
             $('#hypotheses').append(althypothesishtmldiv);
             $('#hypotheses').append(stddevhtmldiv);
@@ -176,7 +186,10 @@ $(document).ready(function () {
         } else if (testType == "noninf2") {
             if ($('#n_ratio').attr('style') == "display: none" || $('#n_ratio').attr('style') == "display: none;") {
                 $('#n_ratio').toggle()
-            }            
+            }  
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
+            }          
             $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> &lt; &delta;")
             $('#testDisplayAlt').html("H<sub>a</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> &ge; &delta;")
             $('#n_ratio').html("n<sub>0</sub> = k*n<sub>1</sub>")
@@ -187,7 +200,10 @@ $(document).ready(function () {
         } else if (testType == "sup2") {
             if ($('#n_ratio').attr('style') == "display: none" || $('#n_ratio').attr('style') == "display: none;") {
                 $('#n_ratio').toggle()
-            }            
+            }       
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
+            }     
             $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> = 0")
             $('#testDisplayAlt').html("H<sub>a</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> &ne; 0")
             $('#n_ratio').html("n<sub>0</sub> = k*n<sub>1</sub>")
@@ -197,6 +213,9 @@ $(document).ready(function () {
         } else if (testType == "equiv2") {
             if ($('#n_ratio').attr('style') == "display: none" || $('#n_ratio').attr('style') == "display: none;") {
                 $('#n_ratio').toggle()
+            }
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
             }
             $('#testDisplayNull').html("H<sub>0</sub>: |&mu;<sub>0</sub> - &mu;<sub>1</sub>| &ge; &delta;")
             $('#testDisplayAlt').html("H<sub>a</sub>: |&mu;<sub>0</sub> - &mu;<sub>1</sub>| &lt; &delta;")
@@ -271,6 +290,7 @@ $(document).ready(function () {
     $(function () {
         $("#simulate").click(function () {
             $('#samplesize').empty();
+            console.log(testType)
             if (testType == "sup2") {
                 let zbeta = NormSInv(1-beta)
                 let zalphaover2 = NormSInv(1-(alpha/2))
@@ -281,9 +301,28 @@ $(document).ready(function () {
                 n_a=Math.ceil(naNum/naden);
                 n_b=Math.ceil(n_a/parseFloat(nratio));
                 n_total = n_a+n_b;
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+            } else if (testType == "noninf2") {
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+            } else if (testType == "equiv2") {
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+            } else if (testType == "sup1") {
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+            } else if (testType == "noninf1") {
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+            } else if (testType == "equiv1") {
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+            } else {
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                $('#samplesize').append("<p id = 'sampsizenum'>Please select a test and fill out the appropriate parameter values.</p>")
             }
-            $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-            $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to be conservative with these estimates.</p>")
+    
         });
     });
 
@@ -412,8 +451,17 @@ $(document).ready(function () {
         $('#hypotheses').on('keypress', '.stddev', function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             //alert(code);
+            console.log(selectedSigma)
             if (code == 13) {
-                sigma = $('#stddevtext').val();
+                if (selectedSigma == "powerone") {
+                    sigma = $('#stddevtext').val();
+                    console.log(sigma)
+                } else {
+                    var sigmatemp = $('#stddevtext').val();
+                    sigma = Math.sqrt(sigmatemp)
+                    console.log(sigmatemp)
+                    console.log(sigma)
+                }
                 for (var i = 0; i < sigma.length; i++) {
                     if (sigma.charCodeAt(i) == 46 || (sigma.charCodeAt(i) <= 57 && sigma.charCodeAt(i) >= 48)) {
                         if (i == sigma.length - 1) {
@@ -507,6 +555,20 @@ $(document).ready(function () {
                     $('#helptaboption').css('background-color', "#C6C3B9");
                     $('#sampsizetaboption').css('background-color', "#D1CFC7");
                 }
+            }
+        });
+    });
+
+    $(function () {
+        $('#hypotheses').on('click', '.stddevpower', function() {
+            if ($(this).attr('id') == "sigmapowerone") {
+                selectedSigma = "powerone"
+                $('#sigmapowerone').css('color', "#615E65");
+                $('#sigmapowertwo').css('color', "#8E8C91");
+            } else if ($(this).attr('id') == "sigmapowertwo") {
+                selectedSigma = "powertwo"
+                $('#sigmapowerone').css('color', "#8E8C91");
+                $('#sigmapowertwo').css('color', "#615E65");
             }
         });
     });

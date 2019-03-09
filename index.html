@@ -25,7 +25,20 @@
         <div class="parameters">
             <div class="parameterChoices">
                 <h2>Desired parameters</h2>
-
+                <div class="paramOptions" id=typeOfTest>What type of test are you interested in simulating?
+                        <select class="testTypes">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="noninf1">One-Sample Non-Inferiority Test</option>
+                            <option value="equiv1">One-Sample Equivalence Test</option>
+                            <option value="sup1">One-Sample Superiority Test</option>
+                            <option value="noninf2">Two-Sample Non-Inferiority Test</option>
+                            <option value="equiv2">Two-Sample Equivalence Test</option>
+                            <option value="sup2">Two-Sample Superiority Test</option>
+                        </select> <br>
+                        <span id="testDisplayNull">H<sub>0</sub>:</span><br>
+                        <span id="testDisplayAlt">H<sub>a</sub>:</span><br>
+                        <span id="n_ratio" style="display: none"></span>
+                    </div>
                 <div class="paramOptions" id="alpha">Alpha level:
                     <input class="alpha_range" id="alpha" type="range" value="0.05" min="0.00" max="1.00" step="0.01">
                     <span class="alpha_value" id="alphaValue"></span>
@@ -34,30 +47,16 @@
                     <input class="power_range" id="power" type="range" value="80" min="0" max="100">
                     <span class="power_value" id="powerValue"></span>
                 </div>
-                <div class="paramOptions" id="trtGroups">Treatment Groups:
-                    <div class="trtGroup_A">
-                        <textarea class="textAreaA" placeholder="Treatment A"></textarea>
-                    </div>
-                    <div class="trtGroup_B">
-                        <textarea class="textAreaB" placeholder="Treatment B"></textarea>
-                    </div>
-                </div>
-                <div class="paramOptions" id=typeOfTest>What type of test are you interested in simulating?
-                    <select class="testTypes">
-                        <option disabled selected value> -- select an option -- </option>
-                        <option value="noninf1">One-Sample Non-Inferiority Test</option>
-                        <option value="equiv1">One-Sample Equivalence Test</option>
-                        <option value="sup1">One-Sample Superiority Test</option>
-                        <option value="noninf2">Two-Sample Non-Inferiority Test</option>
-                        <option value="equiv2">Two-Sample Equivalence Test</option>
-                        <option value="sup2">Two-Sample Superiority Test</option>
-                    </select> <br>
-                    <span id="testDisplayNull">H<sub>0</sub>:</span><br>
-                    <span id="testDisplayAlt">H<sub>a</sub>:</span><br>
-                    <span id="n_ratio" style="display: none"></span>
-                </div>
                 <div class="paramOptions" id=hypotheses>
                 </div>
+                <div class="paramOptions" id="trtGroups">Treatment Group(s):
+                        <div class="trtGroup_A">
+                            <textarea class="textAreaA" placeholder="Treatment A"></textarea>
+                        </div>
+                        <div class="trtGroup_B" style="display: none">
+                            <textarea class="textAreaB" placeholder="Treatment B"></textarea>
+                        </div>
+                    </div>
             </div>
             <div class="buttons">
                 <button id="resetOptions" type="button" class="button">Reset Parameters</button>

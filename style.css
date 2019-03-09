@@ -23,10 +23,6 @@ h2 {
     margin: 0pt;
 }
 
-/* .alpha_value:hover {
-
-} */
-
 .tablinks {
     position: absolute; 
     top: 15%;
@@ -233,4 +229,21 @@ h2 {
 
 #sampsizenum {
     margin-top: 0%; 
+}
+
+#typeOfTest {
+    margin-top: 0%; 
+}
+
+#sigmapowerone:hover {
+    cursor: pointer; 
+}
+
+#sigmapowertwo:hover {
+    cursor: pointer; 
+}
+
+
+#bar {
+    color: #8E8C91;
 }
