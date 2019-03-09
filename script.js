@@ -187,6 +187,13 @@ $(document).ready(function () {
     $('.testTypes').change(function () {
         testType = $('.testTypes').val();
         $('#hypotheses').empty();
+        delta = 0;
+        sigma = 0;
+        nratio = 1; 
+        meandiff = 0;
+        absmeandiff = 0; 
+        nullHyp = 0;
+        altHyp = 0;
         console.log(testType);
         if (testType == "noninf1") {
             if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
