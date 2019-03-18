@@ -10,24 +10,20 @@ function NormSInv(p) {
     var q, r;
     var retVal;
 
-    if ((p < 0) || (p > 1))
-    {
+    if ((p < 0) || (p > 1)) {
         alert("NormSInv: Argument out of range.");
         retVal = 0;
     }
-    else if (p < p_low)
-    {
+    else if (p < p_low) {
         q = Math.sqrt(-2 * Math.log(p));
         retVal = (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
     }
-    else if (p <= p_high)
-    {
+    else if (p <= p_high) {
         q = p - 0.5;
         r = q * q;
         retVal = (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
     }
-    else
-    {
+    else {
         q = Math.sqrt(-2 * Math.log(1 - p));
         retVal = -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
     }
@@ -47,13 +43,13 @@ $(document).ready(function () {
     var testType = $('.testTypes').val();
     var delta = 0;
     var sigma = 0;
-    var nratio = 1; 
+    var nratio = 1;
     var meandiff = 0;
-    var absmeandiff = 0; 
+    var absmeandiff = 0;
     var terms2;
     var n_a = 0;
     var n_b = 0;
-    var n_total = 0; 
+    var n_total = 0;
     var selectedSigma = "powerone"
 
     var nullhypothesishtmldiv = '<div class="nullHypothesis">&mu;: <br> <textarea class="textNum" id="nullHyp" placeholder="0"></textarea> </div>'
@@ -124,7 +120,7 @@ $(document).ready(function () {
         {
             "term": "Phase III Clinical Trial",
             "definition": "The goal of this type of trial is to determine the drug’s effectiveness; determine long term drug safety, and confirm Phase II findings. "
-        }, 
+        },
         {
             "term": "Dose Limiting Toxicity (DLT)",
             "definition": "Treatment related non-hematological toxicity of grade 3 or higher, or treatment related hematological toxicity of grade 4 or higher"
@@ -189,9 +185,9 @@ $(document).ready(function () {
         $('#hypotheses').empty();
         delta = 0;
         sigma = 0;
-        nratio = 1; 
+        nratio = 1;
         meandiff = 0;
-        absmeandiff = 0; 
+        absmeandiff = 0;
         nullHyp = 0;
         altHyp = 0;
         console.log(testType);
@@ -236,10 +232,10 @@ $(document).ready(function () {
         } else if (testType == "noninf2") {
             if ($('#n_ratio').attr('style') == "display: none" || $('#n_ratio').attr('style') == "display: none;") {
                 $('#n_ratio').toggle()
-            }  
+            }
             if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
                 $('.trtGroup_B').toggle()
-            }          
+            }
             $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> &lt; &delta;")
             $('#testDisplayAlt').html("H<sub>a</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> &ge; &delta;")
             $('#n_ratio').html("n<sub>0</sub> = k*n<sub>1</sub>")
@@ -250,10 +246,10 @@ $(document).ready(function () {
         } else if (testType == "sup2") {
             if ($('#n_ratio').attr('style') == "display: none" || $('#n_ratio').attr('style') == "display: none;") {
                 $('#n_ratio').toggle()
-            }       
+            }
             if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
                 $('.trtGroup_B').toggle()
-            }     
+            }
             $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> = 0")
             $('#testDisplayAlt').html("H<sub>a</sub>: &mu;<sub>0</sub> - &mu;<sub>1</sub> &ne; 0")
             $('#n_ratio').html("n<sub>0</sub> = k*n<sub>1</sub>")
@@ -313,23 +309,18 @@ $(document).ready(function () {
             range.on('input', function () {
                 power = this.value;
                 $(this).next(value).html(this.value + "%");
-                beta = (100 - power) / 100.0;        
+                beta = (100 - power) / 100.0;
             });
         });
 
     };
 
-    $(function () {
-        $(".textAreaA").keypress(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                trtGroupAName = $('.textAreaA').val();
-                $('.trtGroup_A').empty();
-                $('.trtGroup_A').attr('id', 'finalName')
-                $('.trtGroup_A').append("1. " + trtGroupAName);
-            }
-        });
-    });
+    var treatmentAText = function () {
+        trtGroupAName = $('.textAreaA').val();
+        if (trtGroupAName == "") {
+            trtGroupAName = "Treatment A"
+        } 
+    };
 
     $(function () {
         $("#resetOptions").click(function () {
@@ -339,294 +330,280 @@ $(document).ready(function () {
 
     $(function () {
         $("#simulate").click(function () {
+            treatmentAText();
+            stddevTextInput();
+            treatmentBText();
             $('#samplesize').empty();
             console.log(testType)
             if (testType == "sup2") {
-                let zbeta = NormSInv(1-beta)
-                let zalphaover2 = NormSInv(1-(alpha/2))
+                nratioText();
+                meandiffText();
+                let zbeta = NormSInv(1 - beta)
+                let zalphaover2 = NormSInv(1 - (alpha / 2))
                 let kplusone = parseFloat(nratio) + 1;
-                let naNum = kplusone * Math.pow(sigma,2) * Math.pow((zbeta+zalphaover2),2);
-                let naden = Math.pow(meandiff,2)                
-                n_a=Math.ceil(naNum/naden);
-                n_b=Math.ceil(n_a/parseFloat(nratio));
-                n_total = n_a+n_b;
+                let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let naden = Math.pow(meandiff, 2)
+                n_a = Math.ceil(naNum / naden);
+                n_b = Math.ceil(n_a / parseFloat(nratio));
+                n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>To detect a statistically significant superiority of " + trtGroupAName + " over " + trtGroupBName +", " + n_total + " subjects are needed, with " + n_a + " in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "noninf2") {
-                let zbeta = NormSInv(1-beta)
-                let zalpha = NormSInv(1-alpha)
+                nratioText();
+                meandiffText();
+                deltaTextInput();
+                let zbeta = NormSInv(1 - beta)
+                let zalpha = NormSInv(1 - alpha)
                 let kplusone = parseFloat(nratio) + 1;
-                let naNum = kplusone * Math.pow(sigma,2) * Math.pow((zbeta+zalpha),2);
-                let naden = Math.pow(meandiff-delta,2)
-                n_a=Math.ceil(naNum/naden);
-                n_b=Math.ceil(n_a/parseFloat(nratio));
-                n_total = n_a+n_b;
+                let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
+                let naden = Math.pow(meandiff - delta, 2)
+                n_a = Math.ceil(naNum / naden);
+                n_b = Math.ceil(n_a / parseFloat(nratio));
+                n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupBName +" is not inferior to " + trtGroupAName+", " + n_total+" (with " + n_a +" in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+") subjects are needed. This provides a Type I error rate of " + alpha+" and " + power+"% power.</p>")
+
                 }
             } else if (testType == "equiv2") {
-                let zbeta = NormSInv(1-beta)
-                let zalpha = NormSInv(1-alpha)
+                nratioText();
+                absmeandiffText();
+                deltaTextInput();
+                let zbeta = NormSInv(1 - beta)
+                let zalpha = NormSInv(1 - alpha)
                 let kplusone = parseFloat(nratio) + 1;
-                let naNum = kplusone * Math.pow(sigma,2) * Math.pow((zbeta+zalpha),2);
-                let naden = Math.pow(delta - absmeandiff,2)
-                n_a=Math.ceil(naNum/naden);
-                n_b=Math.ceil(n_a/parseFloat(nratio));
-                n_total = n_a+n_b;
+                let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
+                let naden = Math.pow(delta - absmeandiff, 2)
+                n_a = Math.ceil(naNum / naden);
+                n_b = Math.ceil(n_a / parseFloat(nratio));
+                n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a +" subjects for " + trtGroupAName+ " and at least " + n_b + " subjects for " + trtGroupBName +". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then" + n_total + " subjects (with " + n_a +" in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+") are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
-                } else if (testType == "sup1") {
+            } else if (testType == "sup1") {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>To detect a statistically significant superiority of " + trtGroupAName + " over the standard treatment, " + n_total + " subjects are needed. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "noninf1") {
-                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                if (n_total == 0 || isNaN(parseFloat(n_total))) {
-                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
-                } else {    
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                }
-            } else if (testType == "equiv1") {
+                deltaTextInput();
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total +" subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupAName +" is not inferior to the standard treatment, " + n_total+" subjects are needed. This provides a Type I error rate of " + alpha+" and " + power+"% power.</p>")
+                }
+            } else if (testType == "equiv1") {
+                deltaTextInput();
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then" + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 $('#samplesize').append("<p id = 'sampsizenum'>Please select a test and fill out the parameter values.</p>")
-                
+
             }
-    
+
         });
     });
 
-    $(function () {
-        $(".textAreaB").keypress(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                trtGroupBName = $('.textAreaB').val();
-                if (trtGroupBName == trtGroupAName) {
-                    alert("You cannot have duplicate treatment group names.")
-                } else {
-                    $('.trtGroup_B').empty();
-                    $('.trtGroup_B').attr('id', 'finalName')
-                    $('.trtGroup_B').append("2. " + trtGroupBName);
-                }
-            }
-        });
-    });
+    var treatmentBText = function () {
+        trtGroupBName = $('.textAreaB').val();
+        if (trtGroupBName == "") {
+            trtGroupBName = "Treatment B"
+        } else if (trtGroupBName == trtGroupAName) {
+            alert("You cannot have duplicate treatment group names.")
+        }
+    };
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.nratio', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                nratio = $('#nratio').val();
-                for (var i = 0; i < nratio.length; i++) {
-                    if (nratio.charCodeAt(i) == 46 || (nratio.charCodeAt(i) <= 57 && nratio.charCodeAt(i) >= 48)) {
-                        if (i == nratio.length - 1) {
-                            if (nratio.charCodeAt(i) != 46) {
-                                $('.nratio').empty();
-                                $('.nratio').attr('id', 'nValue')
-                                $('.nratio').append("n<sub>0</sub> = " + nratio + "n<sub>1</sub>");
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    var nratioText = function () {
+        nratio = $('#nratio').val();
+        nratio = parseFloat(nratio)
+        for (var i = 0; i < nratio.length; i++) {
+            if (nratio.charCodeAt(i) == 46 || (nratio.charCodeAt(i) <= 57 && nratio.charCodeAt(i) >= 48)) {
+                if (i == nratio.length - 1) {
+                    if (nratio.charCodeAt(i) != 46) {
+                        // $('.nratio').empty();
+                        // $('.nratio').attr('id', 'nValue')
+                        // $('.nratio').append("n<sub>0</sub> = " + nratio + "n<sub>1</sub>");
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for k.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for k.")
+                break;
             }
-        });
-    });
+        }
+    };
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.meandiff', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                meandiff = $('#meandiffText').val();
-                for (var i = 0; i < meandiff.length; i++) {
-                    if (meandiff.charCodeAt(i) == 46 || (meandiff.charCodeAt(i) <= 57 && meandiff.charCodeAt(i) >= 48)) {
-                        if (i == meandiff.length - 1) {
-                            if (meandiff.charCodeAt(i) != 46) {
-                                $('.meandiff').empty();
-                                $('.meandiff').attr('id', 'meandiffValue')
-                                $('.meandiff').append("&mu;<sub>0</sub>-&mu;<sub>1</sub>: " + meandiff);
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    var meandiffText = function () {
+
+        meandiff = $('#meandiffText').val();
+        meandiff = parseFloat(meandiff)
+        for (var i = 0; i < meandiff.length; i++) {
+            if (meandiff.charCodeAt(i) == 46 || (meandiff.charCodeAt(i) <= 57 && meandiff.charCodeAt(i) >= 48)) {
+                if (i == meandiff.length - 1) {
+                    if (meandiff.charCodeAt(i) != 46) {
+                        // $('.meandiff').empty();
+                        // $('.meandiff').attr('id', 'meandiffValue')
+                        // $('.meandiff').append("&mu;<sub>0</sub>-&mu;<sub>1</sub>: " + meandiff);
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for mean difference.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for mean difference.")
+                break;
             }
-        });
-    });
+        }
+
+    };
 
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.absmeandiff', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                absmeandiff = $('#absmeandiffText').val();
-                for (var i = 0; i < absmeandiff.length; i++) {
-                    if (absmeandiff.charCodeAt(i) == 46 || (absmeandiff.charCodeAt(i) <= 57 && absmeandiff.charCodeAt(i) >= 48)) {
-                        if (i == absmeandiff.length - 1) {
-                            if (absmeandiff.charCodeAt(i) != 46) {
-                                $('.absmeandiff').empty();
-                                $('.absmeandiff').attr('id', 'absmeandiffValue')
-                                $('.absmeandiff').append("|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: " + absmeandiff);
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    var absmeandiffText = function () {
+
+        absmeandiff = $('#absmeandiffText').val();
+        absmeandiff = parseFloat(absmeandiff)
+        for (var i = 0; i < absmeandiff.length; i++) {
+            if (absmeandiff.charCodeAt(i) == 46 || (absmeandiff.charCodeAt(i) <= 57 && absmeandiff.charCodeAt(i) >= 48)) {
+                if (i == absmeandiff.length - 1) {
+                    if (absmeandiff.charCodeAt(i) != 46) {
+                        // $('.absmeandiff').empty();
+                        // $('.absmeandiff').attr('id', 'absmeandiffValue')
+                        // $('.absmeandiff').append("|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: " + absmeandiff);
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for absolute value mean difference.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for absolute value mean difference.")
+                break;
             }
-        });
-    });
+        }
+    };
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.delta', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                delta = $('#deltaText').val();
-                for (var i = 0; i < delta.length; i++) {
-                    if (delta.charCodeAt(i) == 46 || (delta.charCodeAt(i) <= 57 && delta.charCodeAt(i) >= 48)) {
-                        if (i == delta.length - 1) {
-                            if (delta.charCodeAt(i) != 46) {
-                                $('.delta').empty();
-                                $('.delta').attr('id', 'deltaValue')
-                                $('.delta').append("&delta;: " + delta);
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    var deltaTextInput = function () {
+        delta = $('#deltaText').val();
+        delta = parseFloat(delta);
+        for (var i = 0; i < delta.length; i++) {
+            if (delta.charCodeAt(i) == 46 || (delta.charCodeAt(i) <= 57 && delta.charCodeAt(i) >= 48)) {
+                if (i == delta.length - 1) {
+                    if (delta.charCodeAt(i) != 46) {
+                        // $('.delta').empty();
+                        // $('.delta').attr('id', 'deltaValue')
+                        // $('.delta').append("&delta;: " + delta);
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for delta.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for delta.")
+                break;
             }
-        });
-    });
+        }
+    };
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.stddev', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            //alert(code);
-            console.log(selectedSigma)
-            if (code == 13) {
-                if (selectedSigma == "powerone") {
-                    sigma = $('#stddevtext').val();
-                    console.log(sigma)
-                } else {
-                    var sigmatemp = $('#stddevtext').val();
-                    sigma = Math.sqrt(sigmatemp)
-                    console.log(sigmatemp)
-                    console.log(sigma)
-                }
-                for (var i = 0; i < sigma.length; i++) {
-                    if (sigma.charCodeAt(i) == 46 || (sigma.charCodeAt(i) <= 57 && sigma.charCodeAt(i) >= 48)) {
-                        if (i == sigma.length - 1) {
-                            if (sigma.charCodeAt(i) != 46) {
-                                $('.stddev').empty();
-                                $('.stddev').attr('id', 'stddevvalue')
-                                $('.stddev').append("&sigma;: " + sigma);
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    var stddevTextInput = function () {
+        if (selectedSigma == "powerone") {
+            sigma = $('#stddevtext').val();
+            console.log(sigma)
+        } else {
+            var sigmatemp = $('#stddevtext').val();
+            sigma = Math.sqrt(sigmatemp)
+            console.log(sigmatemp)
+            console.log(sigma)
+        }
+        sigma = parseFloat(sigma);
+        for (var i = 0; i < sigma.length; i++) {
+            if (sigma.charCodeAt(i) == 46 || (sigma.charCodeAt(i) <= 57 && sigma.charCodeAt(i) >= 48)) {
+                if (i == sigma.length - 1) {
+                    if (sigma.charCodeAt(i) != 46) {
+                        // $('.stddev').empty();
+                        // $('.stddev').attr('id', 'stddevvalue')
+                        // $('.stddev').append("&sigma;: " + sigma);
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for standard deviation.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for standard deviation.")
+                break;
             }
-        });
-    });
+        }
+    };
 
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.nullHypothesis', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            //alert(code);
-            if (code == 13) {
-                nullHyp = $('#nullHyp').val();
-                for (var i = 0; i < nullHyp.length; i++) {
-                    if (nullHyp.charCodeAt(i) == 46 || (nullHyp.charCodeAt(i) <= 57 && nullHyp.charCodeAt(i) >= 48)) {
-                        if (i == nullHyp.length - 1) {
-                            if (nullHyp.charCodeAt(i) != 46) {
-                                $('.nullHypothesis').empty();
-                                $('.nullHypothesis').attr('id', 'nullValue')
-                                $('.nullHypothesis').append("&mu;: " + nullHyp);
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    var nullhypothesistext = function () {
+        nullHyp = $('#nullHyp').val();
+        nullHyp = parseFloat(nullHyp);
+        for (var i = 0; i < nullHyp.length; i++) {
+            if (nullHyp.charCodeAt(i) == 46 || (nullHyp.charCodeAt(i) <= 57 && nullHyp.charCodeAt(i) >= 48)) {
+                if (i == nullHyp.length - 1) {
+                    if (nullHyp.charCodeAt(i) != 46) {
+                        // $('.nullHypothesis').empty();
+                        // $('.nullHypothesis').attr('id', 'nullValue')
+                        // $('.nullHypothesis').append("&mu;: " + nullHyp);
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for the null hypothesis.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for the null hypothesis.")
+                break;
             }
-        });
-    });
+        }
 
-    $(function () {
-        $('#hypotheses').on('keypress', '.altHypothesis', function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            //alert(code);
-            if (code == 13) {
-                altHyp = $('#altHyp').val();
-                for (var i = 0; i < altHyp.length; i++) {
-                    if (altHyp.charCodeAt(i) == 46 || (altHyp.charCodeAt(i) <= 57 && altHyp.charCodeAt(i) >= 48)) {
-                        if (i == altHyp.length - 1) {
-                            if (altHyp.charCodeAt(i) != 46) {
-                                $('.altHypothesis').empty();
-                                $('.altHypothesis').attr('id', 'altValue')
-                                $('.altHypothesis').append("&mu;<sub>0</sub>: " + altHyp);
-                            } else {
-                                alert("You must enter a valid number.")
-                                break;
-                            }
-                        }
+    };
+
+    var alternativehypothesistext = function () {
+        altHyp = $('#altHyp').val();
+        altHyp = parseFloat(altHyp)
+        for (var i = 0; i < altHyp.length; i++) {
+            if (altHyp.charCodeAt(i) == 46 || (altHyp.charCodeAt(i) <= 57 && altHyp.charCodeAt(i) >= 48)) {
+                if (i == altHyp.length - 1) {
+                    if (altHyp.charCodeAt(i) != 46) {
+                        // $('.altHypothesis').empty();
+                        // $('.altHypothesis').attr('id', 'altValue')
+                        // $('.altHypothesis').append("&mu;<sub>0</sub>: " + altHyp);
                     } else {
-                        alert("You must enter a valid number.")
+                        alert("You must enter a valid number for the alternative hypothesis.")
                         break;
                     }
                 }
+            } else {
+                alert("You must enter a valid number for the alternative hypothesis.")
+                break;
             }
-        });
-    });
+        }
+
+    };
 
 
     $(function () {
@@ -650,7 +627,7 @@ $(document).ready(function () {
     });
 
     $(function () {
-        $('#hypotheses').on('click', '.stddevpower', function() {
+        $('#hypotheses').on('click', '.stddevpower', function () {
             if ($(this).attr('id') == "sigmapowerone") {
                 selectedSigma = "powerone"
                 $('#sigmapowerone').css('color', "#615E65");
