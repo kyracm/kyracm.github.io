@@ -95,6 +95,7 @@ h2 {
 
 #samplesize {
     height: 35%; 
+    overflow-y: scroll; 
 }
 
 #statisticssection {
@@ -228,6 +229,10 @@ h2 {
 }
 
 #sampsizenum {
+    margin-top: 0%; 
+}
+
+#sampsizepar {
     margin-top: 0%; 
 }
 

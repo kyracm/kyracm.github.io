@@ -61,8 +61,8 @@ $(document).ready(function () {
     var meandiffhtmldiv = '<div class="meandiff">&mu;<sub>0</sub>-&mu;<sub>1</sub>: <br> <textarea class = "textNum" id="meandiffText" placeholder="0"></textarea></div>'
     var absmeandiffhtmldiv = '<div class="absmeandiff">|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: <br> <textarea class = "textNum" id="absmeandiffText" placeholder="0"></textarea></div>'
     var ratiohtmldiv = '<div class="nratio">k:<br><textarea class="textNum" id="nratio" placeholder="1"></textarea></div>'
-    var meandiffhtmldiv_onesamp ='<div class="meandiff_onesamp">&mu;-&mu;<sub>0</sub>: <br> <textarea class = "textNum" id="meandiffText_onesamp" placeholder="0"></textarea></div>';
-    var absmeandiffhtmldiv_onesamp ='<div class="absmeandiff_onesamp">|&mu;-&mu;<sub>0</sub>|: <br> <textarea class = "textNum" id="absmeandiffText_onesamp" placeholder="0"></textarea></div>'; 
+    var meandiffhtmldiv_onesamp = '<div class="meandiff_onesamp">&mu;-&mu;<sub>0</sub>: <br> <textarea class = "textNum" id="meandiffText_onesamp" placeholder="0"></textarea></div>';
+    var absmeandiffhtmldiv_onesamp = '<div class="absmeandiff_onesamp">|&mu;-&mu;<sub>0</sub>|: <br> <textarea class = "textNum" id="absmeandiffText_onesamp" placeholder="0"></textarea></div>';
 
     var terms2 = [
         {
@@ -322,7 +322,7 @@ $(document).ready(function () {
         trtGroupAName = $('.textAreaA').val();
         if (trtGroupAName == "") {
             trtGroupAName = "Treatment A"
-        } 
+        }
     };
 
     $(function () {
@@ -337,7 +337,7 @@ $(document).ready(function () {
             stddevTextInput();
             treatmentBText();
             $('#samplesize').empty();
-            $('#statisticssection').empty(); 
+            $('#statisticssection').empty();
             console.log(testType)
             if (testType == "sup2") {
                 nratioText();
@@ -351,12 +351,12 @@ $(document).ready(function () {
                 n_b = Math.ceil(n_a / parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
+                    $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar'>To detect a statistically significant superiority of " + trtGroupAName + " over " + trtGroupBName +", " + n_total + " subjects are needed, with " + n_a + " in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>To detect a statistically significant superiority of " + trtGroupAName + " over " + trtGroupBName + ", " + n_total + " subjects are needed, with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "noninf2") {
                 nratioText();
@@ -371,13 +371,12 @@ $(document).ready(function () {
                 n_b = Math.ceil(n_a / parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
+                    $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupBName +" is not inferior to " + trtGroupAName+", " + n_total+" (with " + n_a +" in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+") subjects are needed. This provides a Type I error rate of " + alpha+" and " + power+"% power.</p>")
-
+                    $('#statisticssection').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupBName + " is not inferior to " + trtGroupAName + ", " + n_total + " (with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ") subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
                 }
             } else if (testType == "equiv2") {
                 nratioText();
@@ -392,12 +391,12 @@ $(document).ready(function () {
                 n_b = Math.ceil(n_a / parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
+                    $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (with " + n_a +" in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+") are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ") are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha * 100.0 + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "sup1") {
                 meandiffText_onesamp();
@@ -405,12 +404,12 @@ $(document).ready(function () {
                 let zalphaover2 = NormSInv(alpha / 2)
                 let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
                 let nDen = Math.pow(meandiff_onesamp, 2)
-                let n_total = Math.ceil(nNum/nDen);
+                let n_total = Math.ceil(nNum / nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
+                    $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#statisticssection').append("<p id = 'sampsizepar'>To detect a statistically significant superiority of " + trtGroupAName + " over the standard treatment, " + n_total + " subjects are needed. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
@@ -421,35 +420,36 @@ $(document).ready(function () {
                 let zalphaover2 = NormSInv(alpha / 2)
                 let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
                 let nDen = Math.pow(meandiff_onesamp - delta, 2)
-                let n_total = Math.ceil(nNum/nDen);
+                let n_total = Math.ceil(nNum / nDen);
+                console.log($('#statisticssection').html())
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupAName +" is not inferior to the standard treatment, " + n_total+" subjects are needed. This provides a Type I error rate of " + alpha+" and " + power+"% power.</p>")
+                    $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>");
+                    $('#statisticssection').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupAName + " is not inferior to the standard treatment, " + n_total + " subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
+                    console.log($('#statisticssection').html())
                 }
             } else if (testType == "equiv1") {
                 deltaTextInput();
-                absmeandiffText_onesamp(); 
+                absmeandiffText_onesamp();
                 let zbeta = NormSInv(beta)
                 let zalphaover2 = NormSInv(alpha / 2)
                 let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
                 let nDen = Math.pow(delta - absmeandiff_onesamp, 2)
-                let n_total = Math.ceil(nNum/nDen);
+                let n_total = Math.ceil(nNum / nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
+                    $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then " + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then " + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha*100.0 + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 $('#samplesize').append("<p id = 'sampsizenum'>Please select a test and fill out the parameter values.</p>")
-                $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
             }
 
         });
