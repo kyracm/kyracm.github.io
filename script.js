@@ -38,27 +38,31 @@ $(document).ready(function () {
     var power = 80;
     var trtGroupAName = "Treatment A";
     var trtGroupBName = "Treatment B";
-    var nullHyp = 0;
-    var altHyp = 0;
+    // var nullHyp = 0;
+    // var altHyp = 0;
     var testType = $('.testTypes').val();
     var delta = 0;
     var sigma = 0;
     var nratio = 1;
     var meandiff = 0;
     var absmeandiff = 0;
+    var absmeandiff_onesamp = 0;
+    var meandiff_onesamp = 0;
     var terms2;
     var n_a = 0;
     var n_b = 0;
     var n_total = 0;
     var selectedSigma = "powerone"
 
-    var nullhypothesishtmldiv = '<div class="nullHypothesis">&mu;: <br> <textarea class="textNum" id="nullHyp" placeholder="0"></textarea> </div>'
-    var althypothesishtmldiv = '<div class="altHypothesis">&mu;<sub>0</sub>: <br> <textarea class="textNum" id="altHyp" placeholder="0"></textarea> </div>'
+    // var nullhypothesishtmldiv = '<div class="nullHypothesis">&mu;: <br> <textarea class="textNum" id="nullHyp" placeholder="0"></textarea> </div>'
+    // var althypothesishtmldiv = '<div class="altHypothesis">&mu;<sub>0</sub>: <br> <textarea class="textNum" id="altHyp" placeholder="0"></textarea> </div>'
     var stddevhtmldiv = '<div class="stddev"><span class="stddevpower" id="sigmapowerone">&sigma;</span><span id="bar"> | <span><span class="stddevpower" id="sigmapowertwo">&sigma;<sup>2</sup></span>: <br> <textarea class="textNum" id="stddevtext" placeholder="0"></textarea> </div>'
     var deltahtmldiv = '<div class="delta">&delta;: <br> <textarea class="textNum" id="deltaText" placeholder="0"></textarea> </div>'
     var meandiffhtmldiv = '<div class="meandiff">&mu;<sub>0</sub>-&mu;<sub>1</sub>: <br> <textarea class = "textNum" id="meandiffText" placeholder="0"></textarea></div>'
     var absmeandiffhtmldiv = '<div class="absmeandiff">|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: <br> <textarea class = "textNum" id="absmeandiffText" placeholder="0"></textarea></div>'
     var ratiohtmldiv = '<div class="nratio">k:<br><textarea class="textNum" id="nratio" placeholder="1"></textarea></div>'
+    var meandiffhtmldiv_onesamp ='<div class="meandiff_onesamp">&mu;-&mu;<sub>0</sub>: <br> <textarea class = "textNum" id="meandiffText_onesamp" placeholder="0"></textarea></div>';
+    var absmeandiffhtmldiv_onesamp ='<div class="absmeandiff_onesamp">|&mu;-&mu;<sub>0</sub>|: <br> <textarea class = "textNum" id="absmeandiffText_onesamp" placeholder="0"></textarea></div>'; 
 
     var terms2 = [
         {
@@ -185,6 +189,8 @@ $(document).ready(function () {
         $('#hypotheses').empty();
         delta = 0;
         sigma = 0;
+        trtGroupAName = "Treatment A";
+        trtGroupBName = "Treatment B";
         nratio = 1;
         meandiff = 0;
         absmeandiff = 0;
@@ -200,8 +206,7 @@ $(document).ready(function () {
             }
             $('#testDisplayNull').html("H<sub>0</sub>: &mu; - &mu;<sub>0</sub> &lt; &delta;")
             $('#testDisplayAlt').html("H<sub>a</sub>: &mu; - &mu;<sub>0</sub> &ge; &delta;")
-            $('#hypotheses').append(nullhypothesishtmldiv);
-            $('#hypotheses').append(althypothesishtmldiv);
+            $('#hypotheses').append(meandiffhtmldiv_onesamp);
             $('#hypotheses').append(stddevhtmldiv);
             $('#hypotheses').append(deltahtmldiv)
         } else if (testType == "sup1") {
@@ -213,8 +218,7 @@ $(document).ready(function () {
             if ($('.trtGroup_B').attr('style') != "display: none" && $('.trtGroup_B').attr('style') != "display: none;") {
                 $('.trtGroup_B').toggle()
             }
-            $('#hypotheses').append(nullhypothesishtmldiv);
-            $('#hypotheses').append(althypothesishtmldiv);
+            $('#hypotheses').append(meandiffhtmldiv_onesamp);
             $('#hypotheses').append(stddevhtmldiv);
         } else if (testType == "equiv1") {
             $('#testDisplayNull').html("H<sub>0</sub>: |&mu; - &mu;<sub>0</sub>| &ge; &delta;")
@@ -225,8 +229,7 @@ $(document).ready(function () {
             if ($('.trtGroup_B').attr('style') != "display: none" && $('.trtGroup_B').attr('style') != "display: none;") {
                 $('.trtGroup_B').toggle()
             }
-            $('#hypotheses').append(nullhypothesishtmldiv);
-            $('#hypotheses').append(althypothesishtmldiv);
+            $('#hypotheses').append(absmeandiffhtmldiv_onesamp);
             $('#hypotheses').append(stddevhtmldiv);
             $('#hypotheses').append(deltahtmldiv)
         } else if (testType == "noninf2") {
@@ -334,6 +337,7 @@ $(document).ready(function () {
             stddevTextInput();
             treatmentBText();
             $('#samplesize').empty();
+            $('#statisticssection').empty(); 
             console.log(testType)
             if (testType == "sup2") {
                 nratioText();
@@ -390,9 +394,15 @@ $(document).ready(function () {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then" + n_total + " subjects (with " + n_a +" in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+") are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (with " + n_a +" in " + trtGroupAName + " and " + n_b +" in " + trtGroupBName+") are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "sup1") {
+                meandiffText_onesamp();
+                let zbeta = NormSInv(beta)
+                let zalphaover2 = NormSInv(alpha / 2)
+                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let nDen = Math.pow(meandiff_onesamp, 2)
+                let n_total = Math.ceil(nNum/nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
@@ -402,6 +412,12 @@ $(document).ready(function () {
                 }
             } else if (testType == "noninf1") {
                 deltaTextInput();
+                meandiffText_onesamp();
+                let zbeta = NormSInv(beta)
+                let zalphaover2 = NormSInv(alpha / 2)
+                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let nDen = Math.pow(meandiff_onesamp - delta, 2)
+                let n_total = Math.ceil(nNum/nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
@@ -411,12 +427,18 @@ $(document).ready(function () {
                 }
             } else if (testType == "equiv1") {
                 deltaTextInput();
+                absmeandiffText_onesamp(); 
+                let zbeta = NormSInv(beta)
+                let zalphaover2 = NormSInv(alpha / 2)
+                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let nDen = Math.pow(delta - absmeandiff_onesamp, 2)
+                let n_total = Math.ceil(nNum/nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then" + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then " + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
@@ -459,13 +481,36 @@ $(document).ready(function () {
     };
 
     var meandiffText = function () {
-
         meandiff = $('#meandiffText').val();
         meandiff = parseFloat(meandiff)
         for (var i = 0; i < meandiff.length; i++) {
             if (meandiff.charCodeAt(i) == 46 || (meandiff.charCodeAt(i) <= 57 && meandiff.charCodeAt(i) >= 48)) {
                 if (i == meandiff.length - 1) {
                     if (meandiff.charCodeAt(i) != 46) {
+                        // $('.meandiff').empty();
+                        // $('.meandiff').attr('id', 'meandiffValue')
+                        // $('.meandiff').append("&mu;<sub>0</sub>-&mu;<sub>1</sub>: " + meandiff);
+                    } else {
+                        alert("You must enter a valid number for mean difference.")
+                        break;
+                    }
+                }
+            } else {
+                alert("You must enter a valid number for mean difference.")
+                break;
+            }
+        }
+
+    };
+
+    var meandiffText_onesamp = function () {
+
+        meandiff_onesamp = $('#meandiffText_onesamp').val();
+        meandiff_onesamp = parseFloat(meandiff_onesamp)
+        for (var i = 0; i < meandiff_onesamp.length; i++) {
+            if (meandiff_onesamp.charCodeAt(i) == 46 || (meandiff_onesamp.charCodeAt(i) <= 57 && meandiff_onesamp.charCodeAt(i) >= 48)) {
+                if (i == meandiff_onesamp.length - 1) {
+                    if (meandiff_onesamp.charCodeAt(i) != 46) {
                         // $('.meandiff').empty();
                         // $('.meandiff').attr('id', 'meandiffValue')
                         // $('.meandiff').append("&mu;<sub>0</sub>-&mu;<sub>1</sub>: " + meandiff);
@@ -491,6 +536,29 @@ $(document).ready(function () {
             if (absmeandiff.charCodeAt(i) == 46 || (absmeandiff.charCodeAt(i) <= 57 && absmeandiff.charCodeAt(i) >= 48)) {
                 if (i == absmeandiff.length - 1) {
                     if (absmeandiff.charCodeAt(i) != 46) {
+                        // $('.absmeandiff').empty();
+                        // $('.absmeandiff').attr('id', 'absmeandiffValue')
+                        // $('.absmeandiff').append("|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: " + absmeandiff);
+                    } else {
+                        alert("You must enter a valid number for absolute value mean difference.")
+                        break;
+                    }
+                }
+            } else {
+                alert("You must enter a valid number for absolute value mean difference.")
+                break;
+            }
+        }
+    };
+
+    var absmeandiffText_onesamp = function () {
+
+        absmeandiff_onesamp = $('#absmeandiffText_onesamp').val();
+        absmeandiff_onesamp = parseFloat(absmeandiff_onesamp)
+        for (var i = 0; i < absmeandiff_onesamp.length; i++) {
+            if (absmeandiff_onesamp.charCodeAt(i) == 46 || (absmeandiff_onesamp.charCodeAt(i) <= 57 && absmeandiff_onesamp.charCodeAt(i) >= 48)) {
+                if (i == absmeandiff_onesamp.length - 1) {
+                    if (absmeandiff_onesamp.charCodeAt(i) != 46) {
                         // $('.absmeandiff').empty();
                         // $('.absmeandiff').attr('id', 'absmeandiffValue')
                         // $('.absmeandiff').append("|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: " + absmeandiff);
@@ -559,51 +627,51 @@ $(document).ready(function () {
     };
 
 
-    var nullhypothesistext = function () {
-        nullHyp = $('#nullHyp').val();
-        nullHyp = parseFloat(nullHyp);
-        for (var i = 0; i < nullHyp.length; i++) {
-            if (nullHyp.charCodeAt(i) == 46 || (nullHyp.charCodeAt(i) <= 57 && nullHyp.charCodeAt(i) >= 48)) {
-                if (i == nullHyp.length - 1) {
-                    if (nullHyp.charCodeAt(i) != 46) {
-                        // $('.nullHypothesis').empty();
-                        // $('.nullHypothesis').attr('id', 'nullValue')
-                        // $('.nullHypothesis').append("&mu;: " + nullHyp);
-                    } else {
-                        alert("You must enter a valid number for the null hypothesis.")
-                        break;
-                    }
-                }
-            } else {
-                alert("You must enter a valid number for the null hypothesis.")
-                break;
-            }
-        }
+    // var nullhypothesistext = function () {
+    //     nullHyp = $('#nullHyp').val();
+    //     nullHyp = parseFloat(nullHyp);
+    //     for (var i = 0; i < nullHyp.length; i++) {
+    //         if (nullHyp.charCodeAt(i) == 46 || (nullHyp.charCodeAt(i) <= 57 && nullHyp.charCodeAt(i) >= 48)) {
+    //             if (i == nullHyp.length - 1) {
+    //                 if (nullHyp.charCodeAt(i) != 46) {
+    //                     // $('.nullHypothesis').empty();
+    //                     // $('.nullHypothesis').attr('id', 'nullValue')
+    //                     // $('.nullHypothesis').append("&mu;: " + nullHyp);
+    //                 } else {
+    //                     alert("You must enter a valid number for the null hypothesis.")
+    //                     break;
+    //                 }
+    //             }
+    //         } else {
+    //             alert("You must enter a valid number for the null hypothesis.")
+    //             break;
+    //         }
+    //     }
 
-    };
+    // };
 
-    var alternativehypothesistext = function () {
-        altHyp = $('#altHyp').val();
-        altHyp = parseFloat(altHyp)
-        for (var i = 0; i < altHyp.length; i++) {
-            if (altHyp.charCodeAt(i) == 46 || (altHyp.charCodeAt(i) <= 57 && altHyp.charCodeAt(i) >= 48)) {
-                if (i == altHyp.length - 1) {
-                    if (altHyp.charCodeAt(i) != 46) {
-                        // $('.altHypothesis').empty();
-                        // $('.altHypothesis').attr('id', 'altValue')
-                        // $('.altHypothesis').append("&mu;<sub>0</sub>: " + altHyp);
-                    } else {
-                        alert("You must enter a valid number for the alternative hypothesis.")
-                        break;
-                    }
-                }
-            } else {
-                alert("You must enter a valid number for the alternative hypothesis.")
-                break;
-            }
-        }
+    // var alternativehypothesistext = function () {
+    //     altHyp = $('#altHyp').val();
+    //     altHyp = parseFloat(altHyp)
+    //     for (var i = 0; i < altHyp.length; i++) {
+    //         if (altHyp.charCodeAt(i) == 46 || (altHyp.charCodeAt(i) <= 57 && altHyp.charCodeAt(i) >= 48)) {
+    //             if (i == altHyp.length - 1) {
+    //                 if (altHyp.charCodeAt(i) != 46) {
+    //                     // $('.altHypothesis').empty();
+    //                     // $('.altHypothesis').attr('id', 'altValue')
+    //                     // $('.altHypothesis').append("&mu;<sub>0</sub>: " + altHyp);
+    //                 } else {
+    //                     alert("You must enter a valid number for the alternative hypothesis.")
+    //                     break;
+    //                 }
+    //             }
+    //         } else {
+    //             alert("You must enter a valid number for the alternative hypothesis.")
+    //             break;
+    //         }
+    //     }
 
-    };
+    // };
 
 
     $(function () {
@@ -676,9 +744,6 @@ $(document).ready(function () {
 
     });
 
-
-
     alphaSlider();
     powerSlider();
-
 })
