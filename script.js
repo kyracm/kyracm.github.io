@@ -38,8 +38,6 @@ $(document).ready(function () {
     var power = 80;
     var trtGroupAName = "Treatment A";
     var trtGroupBName = "Treatment B";
-    // var nullHyp = 0;
-    // var altHyp = 0;
     var testType = $('.testTypes').val();
     var delta = 0;
     var sigma = 0;
@@ -54,8 +52,6 @@ $(document).ready(function () {
     var n_total = 0;
     var selectedSigma = "powerone"
 
-    // var nullhypothesishtmldiv = '<div class="nullHypothesis">&mu;: <br> <textarea class="textNum" id="nullHyp" placeholder="0"></textarea> </div>'
-    // var althypothesishtmldiv = '<div class="altHypothesis">&mu;<sub>0</sub>: <br> <textarea class="textNum" id="altHyp" placeholder="0"></textarea> </div>'
     var stddevhtmldiv = '<div class="stddev"><span class="stddevpower" id="sigmapowerone">&sigma;</span><span id="bar"> | <span><span class="stddevpower" id="sigmapowertwo">&sigma;<sup>2</sup></span>: <br> <textarea class="textNum" id="stddevtext" placeholder="0"></textarea> </div>'
     var deltahtmldiv = '<div class="delta">&delta;: <br> <textarea class="textNum" id="deltaText" placeholder="0"></textarea> </div>'
     var meandiffhtmldiv = '<div class="meandiff">&mu;<sub>0</sub>-&mu;<sub>1</sub>: <br> <textarea class = "textNum" id="meandiffText" placeholder="0"></textarea></div>'
@@ -142,15 +138,15 @@ $(document).ready(function () {
             "definition": "the failure to reject a false null hypothesis, also known as a 'false negative' finding or conclusion. P(p>.05|H<sub>a</sub>). Aim to keep type II error rate under &beta;"
         },
         {
-            "term": "Alpha (&alpha;)",
+            "term": "Alpha",
             "definition": "The rate you wish to keep type I error under."
         },
         {
-            "term": "Beta (&beta;)",
+            "term": "Beta",
             "definition": "The rate you wish to keep type II rate under. Equal to 1-power."
         },
         {
-            "term": "Non inferiority margin (&delta;)",
+            "term": "Non inferiority margin",
             "definition": "Definition of non-inferiority often set by clinically relevant differences. Margins should be specified a priori and approved by the FDA."
         },
         {
@@ -376,7 +372,7 @@ $(document).ready(function () {
                 } else {
                     $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupBName + " is not inferior to " + trtGroupAName + ", " + n_total + " (with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ") subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>To conclude that there is statistical evidence to suggest " + trtGroupBName + " is not inferior to " + trtGroupAName + ", " + n_total + " (with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ") subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
                 }
             } else if (testType == "equiv2") {
                 nratioText();
@@ -428,7 +424,7 @@ $(document).ready(function () {
                 } else {
                     $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>");
-                    $('#statisticssection').append("<p id = 'sampsizepar>To conclude that there is statistical evidence to suggest " + trtGroupAName + " is not inferior to the standard treatment, " + n_total + " subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>To conclude that there is statistical evidence to suggest " + trtGroupAName + " is not inferior to the standard treatment, " + n_total + " subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
                     console.log($('#statisticssection').html())
                 }
             } else if (testType == "equiv1") {
@@ -631,53 +627,6 @@ $(document).ready(function () {
             }
         }
     };
-
-
-    // var nullhypothesistext = function () {
-    //     nullHyp = $('#nullHyp').val();
-    //     nullHyp = parseFloat(nullHyp);
-    //     for (var i = 0; i < nullHyp.length; i++) {
-    //         if (nullHyp.charCodeAt(i) == 46 || (nullHyp.charCodeAt(i) <= 57 && nullHyp.charCodeAt(i) >= 48)) {
-    //             if (i == nullHyp.length - 1) {
-    //                 if (nullHyp.charCodeAt(i) != 46) {
-    //                     // $('.nullHypothesis').empty();
-    //                     // $('.nullHypothesis').attr('id', 'nullValue')
-    //                     // $('.nullHypothesis').append("&mu;: " + nullHyp);
-    //                 } else {
-    //                     alert("You must enter a valid number for the null hypothesis.")
-    //                     break;
-    //                 }
-    //             }
-    //         } else {
-    //             alert("You must enter a valid number for the null hypothesis.")
-    //             break;
-    //         }
-    //     }
-
-    // };
-
-    // var alternativehypothesistext = function () {
-    //     altHyp = $('#altHyp').val();
-    //     altHyp = parseFloat(altHyp)
-    //     for (var i = 0; i < altHyp.length; i++) {
-    //         if (altHyp.charCodeAt(i) == 46 || (altHyp.charCodeAt(i) <= 57 && altHyp.charCodeAt(i) >= 48)) {
-    //             if (i == altHyp.length - 1) {
-    //                 if (altHyp.charCodeAt(i) != 46) {
-    //                     // $('.altHypothesis').empty();
-    //                     // $('.altHypothesis').attr('id', 'altValue')
-    //                     // $('.altHypothesis').append("&mu;<sub>0</sub>: " + altHyp);
-    //                 } else {
-    //                     alert("You must enter a valid number for the alternative hypothesis.")
-    //                     break;
-    //                 }
-    //             }
-    //         } else {
-    //             alert("You must enter a valid number for the alternative hypothesis.")
-    //             break;
-    //         }
-    //     }
-
-    // };
 
 
     $(function () {
