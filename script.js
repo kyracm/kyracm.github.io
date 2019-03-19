@@ -1,3 +1,4 @@
+//The below function was found on Stack Overflow and computes Z score values. DO NOT MODIFY. 
 function NormSInv(p) {
     var a1 = -39.6968302866538, a2 = 220.946098424521, a3 = -275.928510446969;
     var a4 = 138.357751867269, a5 = -30.6647980661472, a6 = 2.50662827745924;
@@ -33,6 +34,7 @@ function NormSInv(p) {
 
 $(document).ready(function () {
 
+    //These are the global variables that are used in the website. 
     var alpha = 0.05;
     var beta = 0.20;
     var power = 80;
@@ -52,6 +54,12 @@ $(document).ready(function () {
     var n_total = 0;
     var selectedSigma = "powerone"
 
+    //When a user selects a study design, different parameters need to show up. For example, some tests need delta places
+    //while others do not. The below variables are the HTML code needed to create parameter places on the website.
+    //These include standard deviation (or variance; the user can choose between the two), delta, mean difference for one and
+    //two sample, absolute value mean difference for one and two sample, 
+    //the ratio of subjects in n1 to n2 (only applicable for two sample). To add other parameters, follow the pattern
+    //below. 
     var stddevhtmldiv = '<div class="stddev"><span class="stddevpower" id="sigmapowerone">&sigma;</span><span id="bar"> | <span><span class="stddevpower" id="sigmapowertwo">&sigma;<sup>2</sup></span>: <br> <textarea class="textNum" id="stddevtext" placeholder="0"></textarea> </div>'
     var deltahtmldiv = '<div class="delta">&delta;: <br> <textarea class="textNum" id="deltaText" placeholder="0"></textarea> </div>'
     var meandiffhtmldiv = '<div class="meandiff">&mu;<sub>0</sub>-&mu;<sub>1</sub>: <br> <textarea class = "textNum" id="meandiffText" placeholder="0"></textarea></div>'
@@ -60,6 +68,9 @@ $(document).ready(function () {
     var meandiffhtmldiv_onesamp = '<div class="meandiff_onesamp">&mu;-&mu;<sub>0</sub>: <br> <textarea class = "textNum" id="meandiffText_onesamp" placeholder="0"></textarea></div>';
     var absmeandiffhtmldiv_onesamp = '<div class="absmeandiff_onesamp">|&mu;-&mu;<sub>0</sub>|: <br> <textarea class = "textNum" id="absmeandiffText_onesamp" placeholder="0"></textarea></div>';
 
+    //The terms found in the help tab are JSON objects below. To add more, simply follow the pattern below. The function
+    //directly underneath the terms list adds all the terms to a list that the user can search on the website. DO NOT
+    //MODIFY that function. 
     var terms2 = [
         {
             "term": "Non-Inferiority Test",
@@ -131,11 +142,11 @@ $(document).ready(function () {
         },
         {
             "term": "Type I Error",
-            "definition": "the rejection of a true null hypothesis, also known as a 'false positive' finding or conclusion. Pr(p<.05|H<sub>0</sub>) Aim to keep type I error rate under &alpha;"
+            "definition": "The rejection of a true null hypothesis, also known as a 'false positive' finding or conclusion. Pr(p<.05|H<sub>0</sub>) Aim to keep type I error rate under &alpha;"
         },
         {
             "term": "Type II Error",
-            "definition": "the failure to reject a false null hypothesis, also known as a 'false negative' finding or conclusion. P(p>.05|H<sub>a</sub>). Aim to keep type II error rate under &beta;"
+            "definition": "The failure to reject a false null hypothesis, also known as a 'false negative' finding or conclusion. P(p>.05|H<sub>a</sub>). Aim to keep type II error rate under &beta;"
         },
         {
             "term": "Alpha",
@@ -172,6 +183,34 @@ $(document).ready(function () {
         {
             "term": "Mean difference",
             "definition": "The difference of the mean value of interest between two treatment groups."
+        },
+        {
+            "term": "k",
+            "definition": "In a two sample test, k is the ratio of patients in each group (k=n<sub>0</sub>/n<sub>1</sub>)"
+        },
+        {
+            "term": "Factorial cluster design",
+            "definition": "A cluster design in which the researcher is interested in the effect of two or more independent factors."
+        },
+        {
+            "term": "Single factor cluster design",
+            "definition": "A cluster design in which the effect of a single intervention is of interest."
+        },
+        {
+            "term": "Selection bias",
+            "definition": "Bias due to differences between groups existing at baseline that might explain posttest differences among study conditions"
+        },
+        {
+            "term": "History and differential history bias",
+            "definition": "Bias due to any external influence (other than the intervention) that can affect the results of a study"
+        },
+        {
+            "term": "Maturation and differential maturation bias",
+            "definition": "Bias due to natural growth or development (cognitive or physical) affecting results of the study"
+        },
+        {
+            "term": "Contamination bias",
+            "definition": "Bias due to important components of the intervention finding their way into the control/placebo condition"
         }
     ]
 
@@ -180,6 +219,9 @@ $(document).ready(function () {
         $('#668terms').append('<option value="' + terms2[index].term + '">')
     });
 
+    //This function changes what parameter values are displayed when a user selects a test type. It first
+    // resets all the global variables to their default and then appends the parameter divs (established above) to the
+    //hypotheses section. 
     $('.testTypes').change(function () {
         testType = $('.testTypes').val();
         $('#hypotheses').empty();
@@ -272,6 +314,7 @@ $(document).ready(function () {
         }
     });
 
+    //This function creates the alpha slider. It is called at the bottom of this file.
     var alphaSlider = function () {
         var slider = $('#alpha'),
             range = $('.alpha_range'),
@@ -293,6 +336,7 @@ $(document).ready(function () {
         });
     };
 
+    //This function creates the power slider. It is called at the bottom of this file.
     var powerSlider = function () {
         var slider = $('#power'),
             range = $('.power_range'),
@@ -314,6 +358,7 @@ $(document).ready(function () {
 
     };
 
+    //This function assigns the text the user inputs for the name of treatment one to the treatment one global varialbe.
     var treatmentAText = function () {
         trtGroupAName = $('.textAreaA').val();
         if (trtGroupAName == "") {
@@ -321,12 +366,15 @@ $(document).ready(function () {
         }
     };
 
+    //This function refreshes the page when the reset button is pressed.
     $(function () {
         $("#resetOptions").click(function () {
             location.reload();
         });
     });
 
+    //This function calculates the sample size for each of the 6 tests and displays the paragraphs and sample size
+    //breakdowns for each one. 
     $(function () {
         $("#simulate").click(function () {
             treatmentAText();
@@ -344,14 +392,14 @@ $(document).ready(function () {
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
                 let naden = Math.pow(meandiff, 2)
                 n_a = Math.ceil(naNum / naden);
-                n_b = Math.ceil(n_a / parseFloat(nratio));
+                n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
-                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations for both treatment groups have been rounded up to nearest integer value.</p>")
                     $('#statisticssection').append("<p id = 'sampsizepar'>To detect a statistically significant superiority of " + trtGroupAName + " over " + trtGroupBName + ", " + n_total + " subjects are needed, with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "noninf2") {
@@ -364,14 +412,14 @@ $(document).ready(function () {
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let naden = Math.pow(meandiff - delta, 2)
                 n_a = Math.ceil(naNum / naden);
-                n_b = Math.ceil(n_a / parseFloat(nratio));
+                n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
-                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations for both treatment groups have been rounded up to nearest integer value.</p>")
                     $('#statisticssection').append("<p id = 'sampsizepar'>To conclude that there is statistical evidence to suggest " + trtGroupBName + " is not inferior to " + trtGroupAName + ", " + n_total + " (with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ") subjects are needed. This provides a Type I error rate of " + alpha + " and " + power + "% power.</p>")
                 }
             } else if (testType == "equiv2") {
@@ -384,14 +432,14 @@ $(document).ready(function () {
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let naden = Math.pow(delta - absmeandiff, 2)
                 n_a = Math.ceil(naNum / naden);
-                n_b = Math.ceil(n_a / parseFloat(nratio));
+                n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
-                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>Your total sample size should be greater than or equal to " + n_total + ". You need at least " + n_a + " subjects for " + trtGroupAName + " and at least " + n_b + " subjects for " + trtGroupBName + ". Note: sample size calculations for both treatment groups have been rounded up to nearest integer value.</p>")
                     $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (with " + n_a + " in " + trtGroupAName + " and " + n_b + " in " + trtGroupBName + ") are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha * 100.0 + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else if (testType == "sup1") {
@@ -451,6 +499,7 @@ $(document).ready(function () {
         });
     });
 
+    //This function assigns the text the user inputs for the name of treatment two to the treatment two global varialbe.
     var treatmentBText = function () {
         trtGroupBName = $('.textAreaB').val();
         if (trtGroupBName == "") {
@@ -460,17 +509,15 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for nratio and assigns
+    //this number to the global variable for nratio. 
     var nratioText = function () {
         nratio = $('#nratio').val();
         nratio = parseFloat(nratio)
         for (var i = 0; i < nratio.length; i++) {
             if (nratio.charCodeAt(i) == 46 || (nratio.charCodeAt(i) <= 57 && nratio.charCodeAt(i) >= 48)) {
                 if (i == nratio.length - 1) {
-                    if (nratio.charCodeAt(i) != 46) {
-                        // $('.nratio').empty();
-                        // $('.nratio').attr('id', 'nValue')
-                        // $('.nratio').append("n<sub>0</sub> = " + nratio + "n<sub>1</sub>");
-                    } else {
+                    if (nratio.charCodeAt(i) == 46) {
                         alert("You must enter a valid number for k.")
                         break;
                     }
@@ -482,17 +529,15 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for mean difference and assigns
+    //this number to the global variable for mean difference. 
     var meandiffText = function () {
         meandiff = $('#meandiffText').val();
         meandiff = parseFloat(meandiff)
         for (var i = 0; i < meandiff.length; i++) {
             if (meandiff.charCodeAt(i) == 46 || (meandiff.charCodeAt(i) <= 57 && meandiff.charCodeAt(i) >= 48)) {
                 if (i == meandiff.length - 1) {
-                    if (meandiff.charCodeAt(i) != 46) {
-                        // $('.meandiff').empty();
-                        // $('.meandiff').attr('id', 'meandiffValue')
-                        // $('.meandiff').append("&mu;<sub>0</sub>-&mu;<sub>1</sub>: " + meandiff);
-                    } else {
+                    if (meandiff.charCodeAt(i) == 46) {
                         alert("You must enter a valid number for mean difference.")
                         break;
                     }
@@ -505,18 +550,16 @@ $(document).ready(function () {
 
     };
 
-    var meandiffText_onesamp = function () {
 
+    //This function makes sure the user has typed in a valid floating point number for one sample mean difference and assigns
+    //this number to the global variable for one sample mean difference. 
+    var meandiffText_onesamp = function () {
         meandiff_onesamp = $('#meandiffText_onesamp').val();
         meandiff_onesamp = parseFloat(meandiff_onesamp)
         for (var i = 0; i < meandiff_onesamp.length; i++) {
             if (meandiff_onesamp.charCodeAt(i) == 46 || (meandiff_onesamp.charCodeAt(i) <= 57 && meandiff_onesamp.charCodeAt(i) >= 48)) {
                 if (i == meandiff_onesamp.length - 1) {
-                    if (meandiff_onesamp.charCodeAt(i) != 46) {
-                        // $('.meandiff').empty();
-                        // $('.meandiff').attr('id', 'meandiffValue')
-                        // $('.meandiff').append("&mu;<sub>0</sub>-&mu;<sub>1</sub>: " + meandiff);
-                    } else {
+                    if (meandiff_onesamp.charCodeAt(i) == 46) {
                         alert("You must enter a valid number for mean difference.")
                         break;
                     }
@@ -529,19 +572,15 @@ $(document).ready(function () {
 
     };
 
-
+    //This function makes sure the user has typed in a valid floating point number for absolute value mean difference and assigns
+    //this number to the global variable for absolute value mean difference. 
     var absmeandiffText = function () {
-
         absmeandiff = $('#absmeandiffText').val();
         absmeandiff = parseFloat(absmeandiff)
         for (var i = 0; i < absmeandiff.length; i++) {
             if (absmeandiff.charCodeAt(i) == 46 || (absmeandiff.charCodeAt(i) <= 57 && absmeandiff.charCodeAt(i) >= 48)) {
                 if (i == absmeandiff.length - 1) {
                     if (absmeandiff.charCodeAt(i) != 46) {
-                        // $('.absmeandiff').empty();
-                        // $('.absmeandiff').attr('id', 'absmeandiffValue')
-                        // $('.absmeandiff').append("|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: " + absmeandiff);
-                    } else {
                         alert("You must enter a valid number for absolute value mean difference.")
                         break;
                     }
@@ -553,18 +592,15 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for one sample absolute value mean difference and assigns
+    //this number to the global variable for one sample absolute value mean difference.
     var absmeandiffText_onesamp = function () {
-
         absmeandiff_onesamp = $('#absmeandiffText_onesamp').val();
         absmeandiff_onesamp = parseFloat(absmeandiff_onesamp)
         for (var i = 0; i < absmeandiff_onesamp.length; i++) {
             if (absmeandiff_onesamp.charCodeAt(i) == 46 || (absmeandiff_onesamp.charCodeAt(i) <= 57 && absmeandiff_onesamp.charCodeAt(i) >= 48)) {
                 if (i == absmeandiff_onesamp.length - 1) {
-                    if (absmeandiff_onesamp.charCodeAt(i) != 46) {
-                        // $('.absmeandiff').empty();
-                        // $('.absmeandiff').attr('id', 'absmeandiffValue')
-                        // $('.absmeandiff').append("|&mu;<sub>0</sub>-&mu;<sub>1</sub>|: " + absmeandiff);
-                    } else {
+                    if (absmeandiff_onesamp.charCodeAt(i) == 46) {
                         alert("You must enter a valid number for absolute value mean difference.")
                         break;
                     }
@@ -576,17 +612,15 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for delta and assigns
+    //this number to the global variable for delta.
     var deltaTextInput = function () {
         delta = $('#deltaText').val();
         delta = parseFloat(delta);
         for (var i = 0; i < delta.length; i++) {
             if (delta.charCodeAt(i) == 46 || (delta.charCodeAt(i) <= 57 && delta.charCodeAt(i) >= 48)) {
                 if (i == delta.length - 1) {
-                    if (delta.charCodeAt(i) != 46) {
-                        // $('.delta').empty();
-                        // $('.delta').attr('id', 'deltaValue')
-                        // $('.delta').append("&delta;: " + delta);
-                    } else {
+                    if (delta.charCodeAt(i) == 46) {
                         alert("You must enter a valid number for delta.")
                         break;
                     }
@@ -598,6 +632,10 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for standard deviation and assigns
+    //this number to the global variable for standard deviation. Additionally, it detects whether the user has 
+    //chosen to enter the variance or standard deviation. If the user has chosen to enter the variance, the square root of
+    //that number is stored into the global variable sigma for standard deviation. 
     var stddevTextInput = function () {
         if (selectedSigma == "powerone") {
             sigma = $('#stddevtext').val();
@@ -612,11 +650,7 @@ $(document).ready(function () {
         for (var i = 0; i < sigma.length; i++) {
             if (sigma.charCodeAt(i) == 46 || (sigma.charCodeAt(i) <= 57 && sigma.charCodeAt(i) >= 48)) {
                 if (i == sigma.length - 1) {
-                    if (sigma.charCodeAt(i) != 46) {
-                        // $('.stddev').empty();
-                        // $('.stddev').attr('id', 'stddevvalue')
-                        // $('.stddev').append("&sigma;: " + sigma);
-                    } else {
+                    if (sigma.charCodeAt(i) == 46) {
                         alert("You must enter a valid number for standard deviation.")
                         break;
                     }
@@ -629,6 +663,7 @@ $(document).ready(function () {
     };
 
 
+    //This function switches the tabs correctly when the user presses a tab button. 
     $(function () {
         $('.tablinks').click(function () {
             if ($(this).attr('id') == "sampsizetaboption") {
@@ -649,6 +684,8 @@ $(document).ready(function () {
         });
     });
 
+    //This function registers whether a user has selected standard deviation or variance, and stores this
+    //as a global variable. This is used in the standard deviation function. 
     $(function () {
         $('#hypotheses').on('click', '.stddevpower', function () {
             if ($(this).attr('id') == "sigmapowerone") {
@@ -663,6 +700,7 @@ $(document).ready(function () {
         });
     });
 
+    //This function is purely for asthetic purposes; it changes the color of the help tab when the user hovers over it.
     $("#helptaboption").hover(function () {
         $(this).css("background-color", "#C1BDB3");
     }, function () {
@@ -673,6 +711,7 @@ $(document).ready(function () {
         }
     });
 
+    //This function is purely for asthetic purposes; it changes the color of the sample size tab when the user hovers over it.
     $("#sampsizetaboption").hover(function () {
         $(this).css("background-color", "#C1BDB3");
     }, function () {
@@ -683,6 +722,8 @@ $(document).ready(function () {
         }
     });
 
+    //This function registers what the user is typing in to the search bar in the help tab and fills in matching vocab
+    //words from the term/definition JSON pairs defined at the top of this file. 
     $(".searchBar").on('input', function () {
         $('.helpDefinitions').empty();
         var val = this.value.toLowerCase();
@@ -692,7 +733,6 @@ $(document).ready(function () {
             }
 
         });
-
         if (val == "") {
             $('.helpDefinitions').empty();
         }

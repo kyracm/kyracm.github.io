@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 
+
+<!--Head information, do not change. Links to CSS, JS, Jquery, fonts, etc-->
 <head>
     <title>BIOS 668</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +15,24 @@
 </head>
 
 <body>
-    <h1>Study Simulator</h1>
+    <h1>Study Design Simulator</h1>
 
-
+<!--This div creates the two tabs-->
     <div class="tab">
         <button class="tablinks" id="sampsizetaboption">Sample Size Calculator</button>
         <button class="tablinks" id="helptaboption">Help</button>
     </div>
 
+    <!--This div adds the content to the sample size tab. The 6 tests you can choose from are below, as well 
+    as empty places for the null and alternative hypotheses, alpha and power sliders, treatment name places,
+    and buttons to reset the parameters and simulate the study.-->
     <div id="sampsizetab" class="tabcontent">
         <div class="parameters">
             <div class="parameterChoices">
                 <h2>Desired parameters</h2>
                 <div class="paramOptions" id=typeOfTest>What type of test are you interested in simulating?
                         <select class="testTypes">
-                            <option disabled selected value> --- select an option --- </option>
+                            <option disabled selected value> ------ select an option ------ </option>
                             <option value="noninf1">One-Sample Non-Inferiority Test</option>
                             <option value="equiv1">One-Sample Equivalence Test</option>
                             <option value="sup1">One-Sample Superiority Test</option>
@@ -60,12 +65,14 @@
             </div>
             <div class="buttons">
                 <button id="resetOptions" type="button" class="button">Reset Parameters</button>
-                <button id="simulate" type="button" class="button">Simulate Study</button>
+                <button id="simulate" type="button" class="button">Calculate Sample Size</button>
             </div>
         </div>
 
     </div>
 
+    <!--This div creates the content in the help tab. The terms are added in the JS side of things, not 
+    the HTML here.-->
     <div id="helptab" class="tabcontent" style="display: none">
         <div class="helpSection">
             <input class="searchBar" name="keyword" type="text" list="668terms" placeholder="Search a keyword here">
@@ -77,13 +84,14 @@
         </div>
     </div>
 
+    <!--This div creates the main body area of the code. This is where the sample size breakdown and statistics paragraph
+    appear when the user presses the simualte button.-->
     <div class="mainBody">
         <div id = "samplesize">
             <h2>Sample Size Breakdown</h2>
-
+            <p id="selectParamMessage">Please select a test and fill out the associated parameters.</p>
         </div>
         <div id = "statisticssection">
-            <h2>Sample statistics paragraph</h2>
         </div>
 
     </div>

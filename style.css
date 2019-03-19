@@ -1,5 +1,8 @@
 /* https://coolors.co/07020d-36393b-a5d8ff-c1bdb3-afd0d6 */
 
+/*The comment above links to a website where the color scheme for this website was obtained. Below
+are formatting rules applied to the HTML selectors in the website.*/
+
 html {
     font-family: 'Cairo', sans-serif;
     color: #615E65;
@@ -240,6 +243,10 @@ h2 {
     margin-top: 0%; 
 }
 
+#selectParamMessage {
+    margin-top: 0%;
+}
+
 #sigmapowerone:hover {
     cursor: pointer; 
 }
@@ -247,7 +254,6 @@ h2 {
 #sigmapowertwo:hover {
     cursor: pointer; 
 }
-
 
 #bar {
     color: #8E8C91;
