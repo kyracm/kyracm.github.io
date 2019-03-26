@@ -48,7 +48,7 @@ $(document).ready(function () {
     var absmeandiff = 0;
     var absmeandiff_onesamp = 0;
     var meandiff_onesamp = 0;
-    var terms2;
+    var terms;
     var n_a = 0;
     var n_b = 0;
     var n_total = 0;
@@ -71,7 +71,7 @@ $(document).ready(function () {
     //The terms found in the help tab are JSON objects below. To add more, simply follow the pattern below. The function
     //directly underneath the terms list adds all the terms to a list that the user can search on the website. DO NOT
     //MODIFY that function. 
-    var terms2 = [
+    var terms = [
         {
             "term": "Non-Inferiority Test",
             "definition": "A non-inferiority test is used to show that the effect of some treatment A on a specific endpoint is no worse, by more than a pre-specified amount (&delta;), than that of some treatment B"
@@ -211,12 +211,54 @@ $(document).ready(function () {
         {
             "term": "Contamination bias",
             "definition": "Bias due to important components of the intervention finding their way into the control/placebo condition"
+        },
+        {
+            "term": "Subjective allocation",
+            "definition": "The assignment of interventions by the investigators in a subjective way"
+        },
+        {
+            "term": "Systematic allocation",
+            "definition": "The assignment of treatments in a non-subjective, non-random manner"
+        },
+        {
+            "term": "Parallel design",
+            "definition": "A trial design in which patients receive only one of two or more concurrently administered treatments"
+        },
+        {
+            "term": "Stratification",
+            "definition": "Classifying participants on one or more prognostic factors before randomizing"
+        },
+        {
+            "term": "Minimization",
+            "definition": "Minimize the imbalance across multiple factors - including the characteristics of the participants already randomized - rather than just treatment group imbalance"
+        },
+        {
+            "term": "Cross over design",
+            "definition": "A trial design in which subjects receive a sequence of two or more treatments during a given time period with the object of studying differences between the treatments"
+        },
+        {
+            "term": "Carry over effect",
+            "definition": "In a cross over design; when the effects of treatment in the first period carries over and impacts the estimates of the next treatment effect"
+        },
+        {
+            "term": "Period effect",
+            "definition": "Some factor might cause a patient’s underlying condition to deteriorate; or, treatment might be effective in early but not late stage of disease"
+        },
+        {
+            "term": "Clustered designs",
+            "definition": "Designs in which observations at one level are nested within units or clusters at a higher level. These designs are typically used when the effect of individual-level factors are of interest, as well as cluster-level factors."
         }
     ]
 
+    //This function sorts the terms alphabetically
+    terms.sort(function(a, b) {
+        var contentA = a.term.toLowerCase();
+        var contentB = b.term.toLowerCase();
+        return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
+    });
 
-    $.each(terms2, function (index, item) {
-        $('#668terms').append('<option value="' + terms2[index].term + '">')
+    $.each(terms, function (index, item) {
+        $('#668terms').append('<option value="' + terms[index].term + '">')
     });
 
     //This function changes what parameter values are displayed when a user selects a test type. It first
@@ -727,9 +769,9 @@ $(document).ready(function () {
     $(".searchBar").on('input', function () {
         $('.helpDefinitions').empty();
         var val = this.value.toLowerCase();
-        $.each(terms2, function (index, item) {
-            if (terms2[index].term.toLowerCase().indexOf(val) >= 0) {
-                $('.helpDefinitions').append("<p><span class = 'term'>" + terms2[index].term + ":</span> <span class = 'def'>" + terms2[index].definition + "</span></p><br>")
+        $.each(terms, function (index, item) {
+            if (terms[index].term.toLowerCase().indexOf(val) >= 0) {
+                $('.helpDefinitions').append("<p><span class = 'term'>" + terms[index].term + ":</span> <span class = 'def'>" + terms[index].definition + "</span></p><br>")
             }
 
         });
