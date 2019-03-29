@@ -92,19 +92,14 @@ h2 {
     margin: 0; 
     padding-left: 1%; 
     padding-right: 1%; 
-    /* overflow-y: scroll;  */
     background-color: #C6C3B9;
 }
 
 #samplesize {
-    height: 35%; 
+    height: 90%; 
     overflow-y: scroll; 
 }
 
-#statisticssection {
-    height: 65%; 
-    overflow-y: scroll; 
-}
 
 .parameterChoices {
     position: absolute; 
