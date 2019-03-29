@@ -251,7 +251,7 @@ $(document).ready(function () {
     ]
 
     //This function sorts the terms alphabetically
-    terms.sort(function(a, b) {
+    terms.sort(function (a, b) {
         var contentA = a.term.toLowerCase();
         var contentB = b.term.toLowerCase();
         return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
@@ -486,9 +486,9 @@ $(document).ready(function () {
                 }
             } else if (testType == "sup1") {
                 meandiffText_onesamp();
-                let zbeta = NormSInv(beta)
-                let zalphaover2 = NormSInv(alpha / 2)
-                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let zoneminusbeta = NormSInv(1 - beta)
+                let zoneminusalphaover2 = NormSInv(1 - (alpha / 2))
+                let nNum = Math.pow(sigma, 2) * Math.pow((zoneminusbeta + zoneminusalphaover2), 2);
                 let nDen = Math.pow(meandiff_onesamp, 2)
                 let n_total = Math.ceil(nNum / nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
@@ -502,9 +502,9 @@ $(document).ready(function () {
             } else if (testType == "noninf1") {
                 deltaTextInput();
                 meandiffText_onesamp();
-                let zbeta = NormSInv(beta)
-                let zalphaover2 = NormSInv(alpha / 2)
-                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let zoneminusbeta = NormSInv(1 - beta)
+                let zoneminusalpha = NormSInv(1 - alpha)
+                let nNum = Math.pow(sigma, 2) * Math.pow((zoneminusbeta + zoneminusalpha), 2);
                 let nDen = Math.pow(meandiff_onesamp - delta, 2)
                 let n_total = Math.ceil(nNum / nDen);
                 console.log($('#statisticssection').html())
@@ -521,8 +521,8 @@ $(document).ready(function () {
                 deltaTextInput();
                 absmeandiffText_onesamp();
                 let zbeta = NormSInv(beta)
-                let zalphaover2 = NormSInv(alpha / 2)
-                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
+                let zalpha = NormSInv(alpha)
+                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let nDen = Math.pow(delta - absmeandiff_onesamp, 2)
                 let n_total = Math.ceil(nNum / nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
@@ -531,7 +531,7 @@ $(document).ready(function () {
                 } else {
                     $('#statisticssection').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
-                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then " + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha*100.0 + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#statisticssection').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then " + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha * 100.0 + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
@@ -555,18 +555,29 @@ $(document).ready(function () {
     //this number to the global variable for nratio. 
     var nratioText = function () {
         nratio = $('#nratio').val();
+        var slash = 0;
+        if (nratio.indexOf('/') > -1) {
+            slash = 1;
+        }
         nratio = parseFloat(nratio)
-        for (var i = 0; i < nratio.length; i++) {
-            if (nratio.charCodeAt(i) == 46 || (nratio.charCodeAt(i) <= 57 && nratio.charCodeAt(i) >= 48)) {
-                if (i == nratio.length - 1) {
-                    if (nratio.charCodeAt(i) == 46) {
-                        alert("You must enter a valid number for k.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter this ratio as a decimal, not a fraction.")
+            nratio = "a"
+        } else {
+            for (var i = 0; i < nratio.length; i++) {
+                if (nratio.charCodeAt(i) == 46 || (nratio.charCodeAt(i) <= 57 && nratio.charCodeAt(i) >= 48)) {
+                    if (i == nratio.length - 1) {
+                        if (nratio.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for k.")
+                            break;
+                        }
                     }
+                } else {
+
+                    alert("You must enter a valid number for k.")
+
+                    break;
                 }
-            } else {
-                alert("You must enter a valid number for k.")
-                break;
             }
         }
     };
@@ -575,18 +586,29 @@ $(document).ready(function () {
     //this number to the global variable for mean difference. 
     var meandiffText = function () {
         meandiff = $('#meandiffText').val();
+        var slash = 0;
+        if (meandiff.indexOf('/') > -1) {
+            slash = 1;
+        }
         meandiff = parseFloat(meandiff)
-        for (var i = 0; i < meandiff.length; i++) {
-            if (meandiff.charCodeAt(i) == 46 || (meandiff.charCodeAt(i) <= 57 && meandiff.charCodeAt(i) >= 48)) {
-                if (i == meandiff.length - 1) {
-                    if (meandiff.charCodeAt(i) == 46) {
-                        alert("You must enter a valid number for mean difference.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter mean difference as a decimal, not a fraction.")
+            meandiff = "a"
+        } else {
+            for (var i = 0; i < meandiff.length; i++) {
+                if (meandiff.charCodeAt(i) == 46 || (meandiff.charCodeAt(i) <= 57 && meandiff.charCodeAt(i) >= 48)) {
+                    if (i == meandiff.length - 1) {
+                        if (meandiff.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for mean difference.")
+                            break;
+                        }
                     }
+                } else {
+
+                    alert("You must enter a valid number for mean difference.")
+
+                    break;
                 }
-            } else {
-                alert("You must enter a valid number for mean difference.")
-                break;
             }
         }
 
@@ -597,18 +619,29 @@ $(document).ready(function () {
     //this number to the global variable for one sample mean difference. 
     var meandiffText_onesamp = function () {
         meandiff_onesamp = $('#meandiffText_onesamp').val();
+        var slash = 0;
+        if (meandiff_onesamp.indexOf('/') > -1) {
+            slash = 1;
+        }
         meandiff_onesamp = parseFloat(meandiff_onesamp)
-        for (var i = 0; i < meandiff_onesamp.length; i++) {
-            if (meandiff_onesamp.charCodeAt(i) == 46 || (meandiff_onesamp.charCodeAt(i) <= 57 && meandiff_onesamp.charCodeAt(i) >= 48)) {
-                if (i == meandiff_onesamp.length - 1) {
-                    if (meandiff_onesamp.charCodeAt(i) == 46) {
-                        alert("You must enter a valid number for mean difference.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter mean difference as a decimal, not a fraction.")
+            meandiff_onesamp = "a"
+        } else {
+            for (var i = 0; i < meandiff_onesamp.length; i++) {
+                if (meandiff_onesamp.charCodeAt(i) == 46 || (meandiff_onesamp.charCodeAt(i) <= 57 && meandiff_onesamp.charCodeAt(i) >= 48)) {
+                    if (i == meandiff_onesamp.length - 1) {
+                        if (meandiff_onesamp.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for mean difference.")
+                            break;
+                        }
                     }
+                } else {
+
+                    alert("You must enter a valid number for mean difference.")
+
+                    break;
                 }
-            } else {
-                alert("You must enter a valid number for mean difference.")
-                break;
             }
         }
 
@@ -618,18 +651,29 @@ $(document).ready(function () {
     //this number to the global variable for absolute value mean difference. 
     var absmeandiffText = function () {
         absmeandiff = $('#absmeandiffText').val();
+        var slash = 0;
+        if (absmeandiff.indexOf('/') > -1) {
+            slash = 1;
+        }
         absmeandiff = parseFloat(absmeandiff)
-        for (var i = 0; i < absmeandiff.length; i++) {
-            if (absmeandiff.charCodeAt(i) == 46 || (absmeandiff.charCodeAt(i) <= 57 && absmeandiff.charCodeAt(i) >= 48)) {
-                if (i == absmeandiff.length - 1) {
-                    if (absmeandiff.charCodeAt(i) != 46) {
-                        alert("You must enter a valid number for absolute value mean difference.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter absolute value mean difference as a decimal, not a fraction.")
+            absmeandiff = "a"
+        } else {
+            for (var i = 0; i < absmeandiff.length; i++) {
+                if (absmeandiff.charCodeAt(i) == 46 || (absmeandiff.charCodeAt(i) <= 57 && absmeandiff.charCodeAt(i) >= 48)) {
+                    if (i == absmeandiff.length - 1) {
+                        if (absmeandiff.charCodeAt(i) != 46) {
+                            alert("You must enter a valid number for absolute value mean difference.")
+                            break;
+                        }
                     }
+                } else {
+
+                    alert("You must enter a valid number for absolute value mean difference.")
+
+                    break;
                 }
-            } else {
-                alert("You must enter a valid number for absolute value mean difference.")
-                break;
             }
         }
     };
@@ -638,18 +682,28 @@ $(document).ready(function () {
     //this number to the global variable for one sample absolute value mean difference.
     var absmeandiffText_onesamp = function () {
         absmeandiff_onesamp = $('#absmeandiffText_onesamp').val();
+        var slash = 0;
+        if (absmeandiff_onesamp.indexOf('/') > -1) {
+            slash = 1;
+        }
         absmeandiff_onesamp = parseFloat(absmeandiff_onesamp)
-        for (var i = 0; i < absmeandiff_onesamp.length; i++) {
-            if (absmeandiff_onesamp.charCodeAt(i) == 46 || (absmeandiff_onesamp.charCodeAt(i) <= 57 && absmeandiff_onesamp.charCodeAt(i) >= 48)) {
-                if (i == absmeandiff_onesamp.length - 1) {
-                    if (absmeandiff_onesamp.charCodeAt(i) == 46) {
-                        alert("You must enter a valid number for absolute value mean difference.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter absolute value mean difference as a decimal, not a fraction.")
+            absmeandiff_onesamp = "a"
+        } else {
+            for (var i = 0; i < absmeandiff_onesamp.length; i++) {
+                if (absmeandiff_onesamp.charCodeAt(i) == 46 || (absmeandiff_onesamp.charCodeAt(i) <= 57 && absmeandiff_onesamp.charCodeAt(i) >= 48)) {
+                    if (i == absmeandiff_onesamp.length - 1) {
+                        if (absmeandiff_onesamp.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for absolute value mean difference.")
+                            break;
+                        }
                     }
+                } else {
+
+                    alert("You must enter a valid number for absolute value mean difference.")
+
                 }
-            } else {
-                alert("You must enter a valid number for absolute value mean difference.")
-                break;
             }
         }
     };
@@ -658,18 +712,29 @@ $(document).ready(function () {
     //this number to the global variable for delta.
     var deltaTextInput = function () {
         delta = $('#deltaText').val();
+        var slash = 0;
+        if (delta.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
         delta = parseFloat(delta);
-        for (var i = 0; i < delta.length; i++) {
-            if (delta.charCodeAt(i) == 46 || (delta.charCodeAt(i) <= 57 && delta.charCodeAt(i) >= 48)) {
-                if (i == delta.length - 1) {
-                    if (delta.charCodeAt(i) == 46) {
-                        alert("You must enter a valid number for delta.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter delta as a decimal, not a fraction.")
+            delta = "a"
+        } else {
+            for (var i = 0; i < delta.length; i++) {
+                if (delta.charCodeAt(i) == 46 || (delta.charCodeAt(i) <= 57 && delta.charCodeAt(i) >= 48)) {
+                    if (i == delta.length - 1) {
+                        if (delta.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for delta.")
+                            break;
+                        }
                     }
+                } else {
+                    alert("You must enter a valid number for delta.")
+
+                    break;
                 }
-            } else {
-                alert("You must enter a valid number for delta.")
-                break;
             }
         }
     };
@@ -688,18 +753,29 @@ $(document).ready(function () {
             console.log(sigmatemp)
             console.log(sigma)
         }
+        var slash = 0;
+        if (sigma.indexOf('/') > -1) {
+            slash = 1;
+        }
         sigma = parseFloat(sigma);
-        for (var i = 0; i < sigma.length; i++) {
-            if (sigma.charCodeAt(i) == 46 || (sigma.charCodeAt(i) <= 57 && sigma.charCodeAt(i) >= 48)) {
-                if (i == sigma.length - 1) {
-                    if (sigma.charCodeAt(i) == 46) {
-                        alert("You must enter a valid number for standard deviation.")
-                        break;
+        if (slash == 1) {
+            alert("Please enter standard deviation as a decimal, not a fraction.")
+            sigma = "a"
+        } else {
+            for (var i = 0; i < sigma.length; i++) {
+                if (sigma.charCodeAt(i) == 46 || (sigma.charCodeAt(i) <= 57 && sigma.charCodeAt(i) >= 48)) {
+                    if (i == sigma.length - 1) {
+                        if (sigma.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for standard deviation.")
+                            break;
+                        }
                     }
+                } else {
+
+                    alert("You must enter a valid number for standard deviation.")
+
+                    break;
                 }
-            } else {
-                alert("You must enter a valid number for standard deviation.")
-                break;
             }
         }
     };
