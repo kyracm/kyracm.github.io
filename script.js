@@ -520,9 +520,9 @@ $(document).ready(function () {
             } else if (testType == "equiv1") {
                 deltaTextInput();
                 absmeandiffText_onesamp();
-                let zbeta = NormSInv(beta)
+                let zbetaovertwo = NormSInv(beta/2)
                 let zalpha = NormSInv(alpha)
-                let nNum = Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
+                let nNum = Math.pow(sigma, 2) * Math.pow((zbetaovertwo + zalpha), 2);
                 let nDen = Math.pow(delta - absmeandiff_onesamp, 2)
                 let n_total = Math.ceil(nNum / nDen);
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
