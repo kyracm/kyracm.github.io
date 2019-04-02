@@ -68,11 +68,11 @@ $(document).ready(function () {
     var meandiffhtmldiv_onesamp = '<div class="meandiff_onesamp">&mu;-&mu;<sub>0</sub>: <br> <textarea class = "textNum" id="meandiffText_onesamp" placeholder="0"></textarea></div>';
     var absmeandiffhtmldiv_onesamp = '<div class="absmeandiff_onesamp">|&mu;-&mu;<sub>0</sub>|: <br> <textarea class = "textNum" id="absmeandiffText_onesamp" placeholder="0"></textarea></div>';
 
-    var stddevdef = "<li id = 'variableDefinition'>The standard deviation (&sigma;) is a value that indicates the extent of deviation for a group as a whole.</li>";
-    var deltadef = "<li id = 'variableDefinition'>Delta (&delta;) is the allowable difference between two group mean values without reaching significance.</li>";
+    var stddevdef = "<li id = 'variableDefinition'>The standard deviation (&sigma;) is a value that indicates the extent of deviation for a group as a whole from the mean.</li>";
+    var deltadef = "<li id = 'variableDefinition'>Delta (&delta;) is the allowable difference between two group mean values without indicating significance.</li>";
     var meandiffdef_onesamp = "<li id = 'variableDefinition'> The mean difference (&mu; - &mu;<sub>0</sub>) is the hypothesized mean difference between the experimental and standard treatments.</li>";
     var meandiffdef_twosamp = "<li id = 'variableDefinition'> The mean difference (&mu;<sub>0</sub> - &mu;<sub>1</sub>) is the hypothesized mean difference between two treatment groups.</li>";
-    var ratiodeff = "<li id = 'variableDefinition'>K is the ratio of patients in each group, and is equivalent to n<sub>0</sub>/n<sub>1</sub>)</li>";
+    var ratiodeff = "<li id = 'variableDefinition'>K is the ratio of patients in each group, and is equivalent to n<sub>0</sub>/n<sub>1</sub>.</li>";
 
 
     //The terms found in the help tab are JSON objects below. To add more, simply follow the pattern below. The function
@@ -461,8 +461,8 @@ $(document).ready(function () {
                 let kplusone = parseFloat(nratio) + 1;
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
                 let naden = Math.pow(meandiff, 2)
-                n_a = Math.ceil(naNum / naden);
                 n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
+                n_a = n_b * parseFloat(nratio);
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
@@ -481,8 +481,8 @@ $(document).ready(function () {
                 let kplusone = parseFloat(nratio) + 1;
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let naden = Math.pow(meandiff - delta, 2)
-                n_a = Math.ceil(naNum / naden);
                 n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
+                n_a = n_b * parseFloat(nratio);
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
@@ -501,8 +501,8 @@ $(document).ready(function () {
                 let kplusone = parseFloat(nratio) + 1;
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let naden = Math.pow(delta - absmeandiff, 2)
-                n_a = Math.ceil(naNum / naden);
                 n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
+                n_a = n_b * parseFloat(nratio);
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
@@ -563,7 +563,6 @@ $(document).ready(function () {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 $('#samplesize').append("<p id = 'sampsizenum'>Please select a test and fill out the parameter values.</p>")
             }
-
         });
     });
 
