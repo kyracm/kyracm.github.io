@@ -430,10 +430,10 @@ $(document).ready(function () {
             $('#hypotheses').append(iccdiv);
             $('#hypotheses').append(clustersizediv);
             $('#hypotheses').append(clusterdeltadiv)
-            $('#variableDefinitionList').append(iccdef)
             $('#variableDefinitionList').append(propdef)
-            $('#variableDefinitionList').append(clusterdeltadef)
+            $('#variableDefinitionList').append(iccdef)
             $('#variableDefinitionList').append(mdef);
+            $('#variableDefinitionList').append(clusterdeltadef)
         } else if (testType == "binclusK") {
             $('#testDisplayNull').html("H<sub>0</sub>: p<sub>1</sub> = p<sub>2</sub>")
             $('#testDisplayAlt').html("H<sub>a</sub>: p<sub>1</sub> &ne; p<sub>2</sub>")
@@ -447,8 +447,8 @@ $(document).ready(function () {
             $('#hypotheses').append(prop2div);
             $('#hypotheses').append(kdiv);
             $('#hypotheses').append(clustersizediv);
-            $('#variableDefinitionList').append(kdef)
             $('#variableDefinitionList').append(propdef)
+            $('#variableDefinitionList').append(kdef)
             $('#variableDefinitionList').append(mdef)
         } else if (testType == "conclusICC") {
             $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>1</sub> = &mu;<sub>2</sub>")
@@ -460,10 +460,11 @@ $(document).ready(function () {
                 $('.trtGroup_B').toggle()
             }
 
-            $('#hypotheses').append(clusterdeltadiv);
-            $('#hypotheses').append(clustersizediv);
             $('#hypotheses').append(stddevhtmldiv);
             $('#hypotheses').append(iccdiv);
+            $('#hypotheses').append(clusterdeltadiv);
+            $('#hypotheses').append(clustersizediv);
+            
             $('#variableDefinitionList').append(stddevdef)
             $('#variableDefinitionList').append(iccdef)
             $('#variableDefinitionList').append(clusterdeltadef)
