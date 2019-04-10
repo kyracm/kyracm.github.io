@@ -53,6 +53,19 @@ $(document).ready(function () {
     var n_b = 0;
     var n_total = 0;
     var selectedSigma = "powerone"
+    var selectedSigma1 = "powerone"
+    var selectedSigma2 = "powerone"
+    var iccork = "icc"
+    var icc = 0;
+    var k = 0;
+    var prop1 = 0;
+    var clusterSize = 0;
+    var prop2 = 0;
+    var sigma1 = 0;
+    var sigma2 = 0;
+    var mu1 = 0;
+    var mu2 = 0;
+    var bigdelta = 0;
 
     //When a user selects a study design, different parameters need to show up. For example, some tests need delta places
     //while others do not. The below variables are the HTML code needed to create parameter places on the website.
@@ -67,12 +80,29 @@ $(document).ready(function () {
     var ratiohtmldiv = '<div class="nratio">k:<br><textarea class="textNum" id="nratio" placeholder="1"></textarea></div>'
     var meandiffhtmldiv_onesamp = '<div class="meandiff_onesamp">&mu;-&mu;<sub>0</sub>: <br> <textarea class = "textNum" id="meandiffText_onesamp" placeholder="0"></textarea></div>';
     var absmeandiffhtmldiv_onesamp = '<div class="absmeandiff_onesamp">|&mu;-&mu;<sub>0</sub>|: <br> <textarea class = "textNum" id="absmeandiffText_onesamp" placeholder="0"></textarea></div>';
+    var prop1div = '<div class = "prop1">p<sub>1</sub>: <br> <textarea class = "textNum" id = "prop1text" placeholder="0"></textarea></div>'
+    var prop2div = '<div class = "prop2">p<sub>2</sub>: <br> <textarea class = "textNum" id = "prop2text" placeholder="0"></textarea></div>'
+    var iccdiv = '<div class="iccdiv">ICC: <br> <textarea class="textNum" id="icctext" placeholder="0"></textarea> </div>'
+    var kdiv = '<div class="kdiv">K: <br> <textarea class="textNum" id="ktext" placeholder="0"></textarea> </div>'
+    var clustersizediv = '<div class="clustersizediv">M:<br><textarea class="textNum" id="clustersizetext" placeholder="0"></textarea></div>'
+    var clusterdeltadiv = '<div class = "clusterdeltadiv">&Delta;: <br><textarea class = "textNum" id="clusterdeltatext" placeholder = "0"></textarea></div>'
+    var m1div = '<div class = "m1div">&mu;<sub>1</sub>: <br><textarea class = "textNum" id="m1text" placeholder = "0"></textarea></div>'
+    var m2div = '<div class = "m2div">&mu;<sub>2</sub>: <br><textarea class = "textNum" id="m2text" placeholder = "0"></textarea></div>'
+    var stddev1htmldiv = '<div class="stddev1"><span class="stddevpower1" id="sigmapowerone1">&sigma;<sub>1</sub></span><span id="bar"> | <span><span class="stddevpower1" id="sigmapowertwo1">&sigma;<sub>1</sub><sup>2</sup></span>: <br> <textarea class="textNum" id="stddev1text" placeholder="0"></textarea> </div>'
+    var stddev2htmldiv = '<div class="stddev2"><span class="stddevpower2" id="sigmapowerone2">&sigma;<sub>2</sub></span><span id="bar"> | <span><span class="stddevpower2" id="sigmapowertwo2">&sigma;<sub>2</sub><sup>2</sup></span>: <br> <textarea class="textNum" id="stddev2text" placeholder="0"></textarea> </div>'
+
 
     var stddevdef = "<li id = 'variableDefinition'>The standard deviation (&sigma;) is a value that indicates the extent of deviation for a group as a whole from the mean.</li>";
     var deltadef = "<li id = 'variableDefinition'>Delta (&delta;) is the allowable difference between two group mean values without indicating significance.</li>";
-    var meandiffdef_onesamp = "<li id = 'variableDefinition'> The mean difference (&mu; - &mu;<sub>0</sub>) is the hypothesized mean difference between the experimental and standard treatments.</li>";
-    var meandiffdef_twosamp = "<li id = 'variableDefinition'> The mean difference (&mu;<sub>0</sub> - &mu;<sub>1</sub>) is the hypothesized mean difference between two treatment groups.</li>";
+    var meandiffdef_onesamp = "<li id = 'variableDefinition'>The mean difference (&mu; - &mu;<sub>0</sub>) is the hypothesized mean difference between the experimental and standard treatments.</li>";
+    var meandiffdef_twosamp = "<li id = 'variableDefinition'>The mean difference (&mu;<sub>0</sub> - &mu;<sub>1</sub>) is the hypothesized mean difference between two treatment groups.</li>";
     var ratiodeff = "<li id = 'variableDefinition'>K is the ratio of patients in each group, and is equivalent to n<sub>0</sub>/n<sub>1</sub>.</li>";
+    var kdef = "<li id='variableDefinition'>K is the coefficient of variation in the outcome which can serve as an alternative measure to the ICC. This is calculated as the between-cluster standard deviation divided by the parameter of interest, i.e. the proportion, rate or mean, within each cluster</li>";
+    var iccdef = "<li id='variableDefinition'>ICC (&rho;) is the intraclass correlation coefficient which describes the extent of homogeneity of clusters</li>"
+    var mdef = "<li id='variableDefinition'>M is the cluster size; the number of members in each cluster.</li>"
+    var propdef = "<li id='variableDefinition'>P represents the proportion of members who you expect to experience the outcome of interest.</li>"
+    var clusterdeltadef = "<li id='variableDefinition'>&Delta; is the clinically important difference between treatment proportions, and is usually p<sub>2</sub>-p<sub>1</sub>.</li>"
+    var meandef = "<li id='variableDefinition'>&mu; represents the expected mean value for the outcome of interest in a group.</li>"
 
 
     //The terms found in the help tab are JSON objects below. To add more, simply follow the pattern below. The function
@@ -193,7 +223,7 @@ $(document).ready(function () {
         },
         {
             "term": "k",
-            "definition": "In a two sample test, k is the ratio of patients in each group (k=n<sub>0</sub>/n<sub>1</sub>)"
+            "definition": "The coefficient of variation in the outcome which can serve as an alternative measure to the ICC. This is calculated as the between-cluster standard deviation divided by the parameter of interest, i.e. the proportion, rate or mean, within each cluster"
         },
         {
             "term": "Factorial cluster design",
@@ -254,6 +284,10 @@ $(document).ready(function () {
         {
             "term": "Clustered designs",
             "definition": "Designs in which observations at one level are nested within units or clusters at a higher level. These designs are typically used when the effect of individual-level factors are of interest, as well as cluster-level factors."
+        },
+        {
+            "term": "ICC",
+            "definition": "Intraclass correlation coefficient which describes the extent of homogeneity of clusters"
         }
     ]
 
@@ -382,6 +416,77 @@ $(document).ready(function () {
             $('#variableDefinitionList').append(stddevdef)
             $('#variableDefinitionList').append(deltadef)
             $('#variableDefinitionList').append(ratiodeff)
+        } else if (testType == "binclusICC") {
+            $('#testDisplayNull').html("H<sub>0</sub>: p<sub>1</sub> = p<sub>2</sub>")
+            $('#testDisplayAlt').html("H<sub>a</sub>: p<sub>1</sub> &ne; p<sub>2</sub>")
+            if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
+                $('#n_ratio').toggle()
+            }
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
+            $('#hypotheses').append(prop1div);
+            $('#hypotheses').append(prop2div);
+            $('#hypotheses').append(iccdiv);
+            $('#hypotheses').append(clustersizediv);
+            $('#hypotheses').append(clusterdeltadiv)
+            $('#variableDefinitionList').append(iccdef)
+            $('#variableDefinitionList').append(propdef)
+            $('#variableDefinitionList').append(clusterdeltadef)
+            $('#variableDefinitionList').append(mdef);
+        } else if (testType == "binclusK") {
+            $('#testDisplayNull').html("H<sub>0</sub>: p<sub>1</sub> = p<sub>2</sub>")
+            $('#testDisplayAlt').html("H<sub>a</sub>: p<sub>1</sub> &ne; p<sub>2</sub>")
+            if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
+                $('#n_ratio').toggle()
+            }
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
+            $('#hypotheses').append(prop1div);
+            $('#hypotheses').append(prop2div);
+            $('#hypotheses').append(kdiv);
+            $('#hypotheses').append(clustersizediv);
+            $('#variableDefinitionList').append(kdef)
+            $('#variableDefinitionList').append(propdef)
+            $('#variableDefinitionList').append(mdef)
+        } else if (testType == "conclusICC") {
+            $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>1</sub> = &mu;<sub>2</sub>")
+            $('#testDisplayAlt').html("H<sub>a</sub>: &mu;<sub>1</sub> &ne; &mu;<sub>2</sub>")
+            if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
+                $('#n_ratio').toggle()
+            }
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
+
+            $('#hypotheses').append(clusterdeltadiv);
+            $('#hypotheses').append(clustersizediv);
+            $('#hypotheses').append(stddevhtmldiv);
+            $('#hypotheses').append(iccdiv);
+            $('#variableDefinitionList').append(stddevdef)
+            $('#variableDefinitionList').append(iccdef)
+            $('#variableDefinitionList').append(clusterdeltadef)
+            $('#variableDefinitionList').append(mdef)
+        } else if (testType == "conclusK") {
+            $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>1</sub> = &mu;<sub>2</sub>")
+            $('#testDisplayAlt').html("H<sub>a</sub>: &mu;<sub>1</sub> &ne; &mu;<sub>2</sub>")
+            if ($('#n_ratio').attr('style') != "display: none" && $('#n_ratio').attr('style') != "display: none;") {
+                $('#n_ratio').toggle()
+            }
+            if ($('.trtGroup_B').attr('style') == "display: none" || $('.trtGroup_B').attr('style') == "display: none;") {
+                $('.trtGroup_B').toggle()
+            }
+            $('#hypotheses').append(m1div);
+            $('#hypotheses').append(m2div);
+            $('#hypotheses').append(stddev1htmldiv);
+            $('#hypotheses').append(stddev2htmldiv);
+            $('#hypotheses').append(kdiv);
+            $('#hypotheses').append(clustersizediv);
+            $('#variableDefinitionList').append(meandef)
+            $('#variableDefinitionList').append(stddevdef)
+            $('#variableDefinitionList').append(kdef)
+            $('#variableDefinitionList').append(mdef)
         }
     });
 
@@ -444,7 +549,7 @@ $(document).ready(function () {
         });
     });
 
-    //This function calculates the sample size for each of the 6 tests and displays the paragraphs and sample size
+    //This function calculates the sample size for each of the tests and displays the paragraphs and sample size
     //breakdowns for each one. 
     $(function () {
         $("#simulate").click(function () {
@@ -462,7 +567,7 @@ $(document).ready(function () {
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalphaover2), 2);
                 let naden = Math.pow(meandiff, 2)
                 n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
-                n_a = n_b * parseFloat(nratio);
+                n_a = Math.ceil(n_b * parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
@@ -482,7 +587,7 @@ $(document).ready(function () {
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let naden = Math.pow(meandiff - delta, 2)
                 n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
-                n_a = n_b * parseFloat(nratio);
+                n_a = Math.ceil(n_b * parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
@@ -502,7 +607,7 @@ $(document).ready(function () {
                 let naNum = kplusone * Math.pow(sigma, 2) * Math.pow((zbeta + zalpha), 2);
                 let naden = Math.pow(delta - absmeandiff, 2)
                 n_b = Math.ceil((naNum / naden) / parseFloat(nratio));
-                n_a = n_b * parseFloat(nratio);
+                n_a = Math.ceil(n_b * parseFloat(nratio));
                 n_total = n_a + n_b;
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
@@ -546,7 +651,7 @@ $(document).ready(function () {
             } else if (testType == "equiv1") {
                 deltaTextInput();
                 absmeandiffText_onesamp();
-                let zbetaovertwo = NormSInv(beta/2)
+                let zbetaovertwo = NormSInv(beta / 2)
                 let zalpha = NormSInv(alpha)
                 let nNum = Math.pow(sigma, 2) * Math.pow((zbetaovertwo + zalpha), 2);
                 let nDen = Math.pow(delta - absmeandiff_onesamp, 2)
@@ -558,6 +663,95 @@ $(document).ready(function () {
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study (" + trtGroupAName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
                     $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between the standard treatment and " + trtGroupAName + ", then " + n_total + " subjects are needed ensure that the limits of a two-sided confidence interval will exclude a difference in means of more than " + delta + " only " + alpha * 100.0 + "% of the time. This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                }
+            } else if (testType == "binclusICC") {
+                prop2Input();
+                prop1Input();
+                iccinput();
+                clusterSizeInput();
+                bigdeltainput();
+                //Total n per arm = [(Za/2 + Zb)^2] [p1(1-p1)+p2(1-p2)] [1+(cluster size-1)*ICC] / delta^2
+                let zbeta = NormSInv(beta)
+                let zalphaovertwo = NormSInv(alpha / 2.0)
+                let nnum = Math.pow(zalphaovertwo + zbeta, 2) * ((prop1 * (1 - prop1)) + (prop2 * (1 - prop2))) * ((1 + (clusterSize - 1)) * icc)
+                let nden = Math.pow(bigdelta, 2);
+                let n_half = Math.ceil(0.5*(nnum / nden));
+                let n_total = 2 * n_half;
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study per arm. Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
+                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                }
+            } else if (testType == "binclusK") {
+                //1+ [(Za/2 + Zb)^2] [p1(1-p1)/n+p2(1-p2)/n + k^2(p1^2 + p2^2)] / (p1-p2)^2
+                prop1Input();
+                prop2Input();
+                kinput()
+                clusterSizeInput()
+
+                let zbeta = NormSInv(beta)
+                let zalphaovertwo = NormSInv(alpha / 2.0)
+                let nnum = Math.pow(zalphaovertwo + zbeta, 2) * ((prop1 * (1 - prop1)/clusterSize) + (prop2 * (1 - prop2)/clusterSize) + (Math.pow(k,2)*(Math.pow(prop1,2) + Math.pow(prop2,2))))
+                let nden = Math.pow(prop1 - prop2, 2);
+                let n_half = Math.ceil(0.5*(1 + (nnum / nden)));
+                let n_total = 2 * n_half;
+
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " clusters in your study per arm (" + n_half + " in " + trtGroupAName + " and " + n_half + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
+                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                }
+
+            } else if (testType == "conclusICC") {
+                //Total n per arm = [(Za/2 + Zb)^2] [2 sigma^2] [1+(n-1)*ICC] / delta^2
+
+                clusterSizeInput()
+                stddev1TextInput()
+                bigdeltainput()
+                iccinput()
+
+                let zbeta = NormSInv(beta)
+                let zalphaovertwo = NormSInv(alpha / 2.0)
+                let nnum = Math.pow(zalphaovertwo + zbeta, 2) * 2 * Math.pow(sigma, 2) * (1 + ((clusterSize-1) * icc))
+                let nden = Math.pow(bigdelta, 2);
+                let n_half = Math.ceil(0.5*(nnum / nden));
+                let n_total = 2 * n_half;
+
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study per arm (" + n_half + " for " + trtGroupAName + " and " + n_half + " for " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
+                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                }
+
+            } else if (testType == "conclusK") {
+                //1+ [(Za/2 + Zb)^2] [(sigma1^2 + sigma2^2)/n + k^2(mu1^2+mu2^2)] / (mu1-mu2)^2
+
+                mu1Input()
+                mu2Input()
+                stddev1TextInput()
+                stddev2TextInput()
+                kinput()
+                clusterSizeInput()
+
+                let zbeta = NormSInv(beta)
+                let zalphaovertwo = NormSInv(alpha / 2.0)
+                let nnum = Math.pow(zalphaovertwo + zbeta, 2) * ((Math.pow(sigma1, 2)/clusterSize) + (Math.pow(sigma2,2)/clusterSize) + (Math.pow(k,2)*(Math.pow(mu1,2) + Math.pow(mu2,2))))
+                let nden = Math.pow(mu1 - mu2, 2);
+                let n_half = Math.ceil(0.5*(1 + (nnum / nden)));
+                let n_total = 2 * n_half;
+
+                if (n_total == 0 || isNaN(parseFloat(n_total))) {
+                    $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
+                } else {
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " clusters in your study per arm (" + n_half + " in " + trtGroupAName + " and " + n_half + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
+                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
                 }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
@@ -764,6 +958,238 @@ $(document).ready(function () {
         }
     };
 
+    var prop1Input = function () {
+        prop1 = $('#prop1text').val();
+        var slash = 0;
+        if (prop1.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        prop1 = parseFloat(prop1);
+        if (slash == 1) {
+            alert("Please enter proportion 1 as a decimal, not a fraction.")
+            prop1 = "a"
+        } else {
+            for (var i = 0; i < prop1.length; i++) {
+                if (prop1.charCodeAt(i) == 46 || (prop1.charCodeAt(i) <= 57 && prop1.charCodeAt(i) >= 48)) {
+                    if (i == prop1.length - 1) {
+                        if (prop1.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for proportion 1.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for proportion 1.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var prop2Input = function () {
+        prop2 = $('#prop2text').val();
+        var slash = 0;
+        if (prop2.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        prop2 = parseFloat(prop2);
+        if (slash == 1) {
+            alert("Please enter proportion 2 as a decimal, not a fraction.")
+            prop2 = "a"
+        } else {
+            for (var i = 0; i < prop2.length; i++) {
+                if (prop2.charCodeAt(i) == 46 || (prop2.charCodeAt(i) <= 57 && prop2.charCodeAt(i) >= 48)) {
+                    if (i == prop2.length - 1) {
+                        if (prop2.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for proportion 2.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for proportion 2.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var mu1Input = function () {
+        mu1 = $('#m1text').val();
+        var slash = 0;
+        if (mu1.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        mu1 = parseFloat(mu1);
+        if (slash == 1) {
+            alert("Please enter mu 1 as a decimal, not a fraction.")
+            mu1 = "a"
+        } else {
+            for (var i = 0; i < mu1.length; i++) {
+                if (mu1.charCodeAt(i) == 46 || (mu1.charCodeAt(i) <= 57 && mu1.charCodeAt(i) >= 48)) {
+                    if (i == mu1.length - 1) {
+                        if (mu1.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for mu 1.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for mu 1.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var mu2Input = function () {
+        mu2 = $('#m2text').val();
+        var slash = 0;
+        if (mu2.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        mu2 = parseFloat(mu2);
+        if (slash == 1) {
+            alert("Please enter mu 2 as a decimal, not a fraction.")
+            mu2 = "a"
+        } else {
+            for (var i = 0; i < mu2.length; i++) {
+                if (mu2.charCodeAt(i) == 46 || (mu2.charCodeAt(i) <= 57 && mu2.charCodeAt(i) >= 48)) {
+                    if (i == mu2.length - 1) {
+                        if (mu2.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for mu 2.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for mu 2.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var clusterSizeInput = function () {
+        clusterSize = $('#clustersizetext').val();
+        var slash = 0;
+        if (clusterSize.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        clusterSize = parseFloat(clusterSize);
+        if (slash == 1) {
+            alert("Please enter cluster size as a decimal, not a fraction.")
+            clusterSize = "a"
+        } else {
+            for (var i = 0; i < clusterSize.length; i++) {
+                if (clusterSize.charCodeAt(i) == 46 || (clusterSize.charCodeAt(i) <= 57 && clusterSize.charCodeAt(i) >= 48)) {
+                    if (i == clusterSize.length - 1) {
+                        if (clusterSize.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for cluster size.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for cluster size.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var bigdeltainput = function () {
+        bigdelta = $('#clusterdeltatext').val();
+        var slash = 0;
+        if (bigdelta.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        bigdelta = parseFloat(bigdelta);
+        if (slash == 1) {
+            alert("Please enter cluster delta as a decimal, not a fraction.")
+            bigdelta = "a"
+        } else {
+            for (var i = 0; i < bigdelta.length; i++) {
+                if (bigdelta.charCodeAt(i) == 46 || (bigdelta.charCodeAt(i) <= 57 && bigdelta.charCodeAt(i) >= 48)) {
+                    if (i == bigdelta.length - 1) {
+                        if (bigdelta.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for cluster delta.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for cluster delta.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var iccinput = function () {
+        icc = $('#icctext').val();
+        var slash = 0;
+        if (icc.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        icc = parseFloat(icc);
+        if (slash == 1) {
+            alert("Please enter ICC as a decimal, not a fraction.")
+            icc = "a"
+        } else {
+            for (var i = 0; i < icc.length; i++) {
+                if (icc.charCodeAt(i) == 46 || (icc.charCodeAt(i) <= 57 && icc.charCodeAt(i) >= 48)) {
+                    if (i == icc.length - 1) {
+                        if (icc.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for ICC.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for ICC.")
+
+                    break;
+                }
+            }
+        }
+    };
+
+    var kinput = function () {
+        k = $('#ktext').val();
+        var slash = 0;
+        if (k.indexOf('/') > -1) {
+            slash = 1;
+            console.log(slash)
+        }
+        k = parseFloat(k);
+        if (slash == 1) {
+            alert("Please enter k as a decimal, not a fraction.")
+            k = "a"
+        } else {
+            for (var i = 0; i < k.length; i++) {
+                if (k.charCodeAt(i) == 46 || (k.charCodeAt(i) <= 57 && k.charCodeAt(i) >= 48)) {
+                    if (i == k.length - 1) {
+                        if (k.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for k.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for k.")
+
+                    break;
+                }
+            }
+        }
+    };
+
     //This function makes sure the user has typed in a valid floating point number for standard deviation and assigns
     //this number to the global variable for standard deviation. Additionally, it detects whether the user has 
     //chosen to enter the variance or standard deviation. If the user has chosen to enter the variance, the square root of
@@ -796,15 +1222,80 @@ $(document).ready(function () {
                         }
                     }
                 } else {
-
                     alert("You must enter a valid number for standard deviation.")
-
                     break;
                 }
             }
         }
     };
 
+    var stddev1TextInput = function () {
+        if (selectedSigma1 == "powerone") {
+            sigma1 = $('#stddev1text').val();
+        } else {
+            var sigmatemp = $('#stddev1text').val();
+            sigma1 = Math.sqrt(sigmatemp)
+            console.log(sigmatemp)
+            console.log(sigma1)
+        }
+        var slash = 0;
+        if (sigma1.indexOf('/') > -1) {
+            slash = 1;
+        }
+        sigma1 = parseFloat(sigma1);
+        if (slash == 1) {
+            alert("Please enter standard deviation as a decimal, not a fraction.")
+            sigma1 = "a"
+        } else {
+            for (var i = 0; i < sigma1.length; i++) {
+                if (sigma1.charCodeAt(i) == 46 || (sigma1.charCodeAt(i) <= 57 && sigma1.charCodeAt(i) >= 48)) {
+                    if (i == sigma1.length - 1) {
+                        if (sigma1.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for standard deviation.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for standard deviation.")
+                    break;
+                }
+            }
+        }
+    };
+
+    var stddev2TextInput = function () {
+        if (selectedSigma2 == "powerone") {
+            sigma2 = $('#stddev2text').val();
+        } else {
+            var sigmatemp = $('#stddev2text').val();
+            sigma2 = Math.sqrt(sigmatemp)
+            console.log(sigmatemp)
+            console.log(sigma2)
+        }
+        var slash = 0;
+        if (sigma2.indexOf('/') > -1) {
+            slash = 1;
+        }
+        sigma2 = parseFloat(sigma2);
+        if (slash == 1) {
+            alert("Please enter standard deviation as a decimal, not a fraction.")
+            sigma2 = "a"
+        } else {
+            for (var i = 0; i < sigma2.length; i++) {
+                if (sigma2.charCodeAt(i) == 46 || (sigma2.charCodeAt(i) <= 57 && sigma2.charCodeAt(i) >= 48)) {
+                    if (i == sigma2.length - 1) {
+                        if (sigma2.charCodeAt(i) == 46) {
+                            alert("You must enter a valid number for standard deviation.")
+                            break;
+                        }
+                    }
+                } else {
+                    alert("You must enter a valid number for standard deviation.")
+                    break;
+                }
+            }
+        }
+    };
 
     //This function switches the tabs correctly when the user presses a tab button. 
     $(function () {
@@ -839,6 +1330,34 @@ $(document).ready(function () {
                 selectedSigma = "powertwo"
                 $('#sigmapowerone').css('color', "#8E8C91");
                 $('#sigmapowertwo').css('color', "#615E65");
+            }
+        });
+    });
+
+    $(function () {
+        $('#hypotheses').on('click', '.stddevpower1', function () {
+            if ($(this).attr('id') == "sigmapowerone1") {
+                selectedSigma1 = "powerone"
+                $('#sigmapowerone1').css('color', "#615E65");
+                $('#sigmapowertwo1').css('color', "#8E8C91");
+            } else if ($(this).attr('id') == "sigmapowertwo1") {
+                selectedSigma1 = "powertwo"
+                $('#sigmapowerone1').css('color', "#8E8C91");
+                $('#sigmapowertwo1').css('color', "#615E65");
+            }
+        });
+    });
+
+    $(function () {
+        $('#hypotheses').on('click', '.stddevpower2', function () {
+            if ($(this).attr('id') == "sigmapowerone2") {
+                selectedSigma2 = "powerone"
+                $('#sigmapowerone2').css('color', "#615E65");
+                $('#sigmapowertwo2').css('color', "#8E8C91");
+            } else if ($(this).attr('id') == "sigmapowertwo2") {
+                selectedSigma2 = "powertwo"
+                $('#sigmapowerone2').css('color', "#8E8C91");
+                $('#sigmapowertwo2').css('color', "#615E65");
             }
         });
     });

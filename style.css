@@ -250,6 +250,22 @@ h2 {
     cursor: pointer; 
 }
 
+#sigmapowerone1:hover {
+    cursor: pointer; 
+}
+
+#sigmapowertwo1:hover {
+    cursor: pointer; 
+}
+
+#sigmapowerone2:hover {
+    cursor: pointer; 
+}
+
+#sigmapowertwo2:hover {
+    cursor: pointer; 
+}
+
 #bar {
     color: #8E8C91;
 }
