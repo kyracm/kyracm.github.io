@@ -97,11 +97,12 @@ $(document).ready(function () {
     var meandiffdef_onesamp = "<li id = 'variableDefinition'>The mean difference (&mu; - &mu;<sub>0</sub>) is the hypothesized mean difference between the experimental and standard treatments.</li>";
     var meandiffdef_twosamp = "<li id = 'variableDefinition'>The mean difference (&mu;<sub>0</sub> - &mu;<sub>1</sub>) is the hypothesized mean difference between two treatment groups.</li>";
     var ratiodeff = "<li id = 'variableDefinition'>K is the ratio of patients in each group, and is equivalent to n<sub>0</sub>/n<sub>1</sub>.</li>";
-    var kdef = "<li id='variableDefinition'>K is the coefficient of variation in the outcome which can serve as an alternative measure to the ICC. This is calculated as the between-cluster standard deviation divided by the parameter of interest, i.e. the proportion, rate or mean, within each cluster</li>";
-    var iccdef = "<li id='variableDefinition'>ICC (&rho;) is the intraclass correlation coefficient which describes the extent of homogeneity of clusters</li>"
+    var kdef = "<li id='variableDefinition'>K is the coefficient of variation in the outcome which can serve as an alternative measure to the ICC. This is calculated as the between-cluster standard deviation divided by the parameter of interest, i.e. the proportion, rate or mean, within each cluster.</li>";
+    var iccdef = "<li id='variableDefinition'>ICC (&rho;) is the intraclass correlation coefficient which describes the extent of homogeneity of clusters.</li>"
     var mdef = "<li id='variableDefinition'>M is the cluster size; the number of members in each cluster.</li>"
     var propdef = "<li id='variableDefinition'>P represents the proportion of members who you expect to experience the outcome of interest.</li>"
     var clusterdeltadef = "<li id='variableDefinition'>&Delta; is the clinically important difference between treatment proportions, and is usually p<sub>2</sub>-p<sub>1</sub>.</li>"
+    var clusterdeltameandef = "<li id='variableDefinition'>&Delta; is the clinically important difference between treatment means, and is usually &mu;<sub>2</sub>-&mu;<sub>1</sub>.</li>"
     var meandef = "<li id='variableDefinition'>&mu; represents the expected mean value for the outcome of interest in a group.</li>"
 
 
@@ -467,7 +468,7 @@ $(document).ready(function () {
             
             $('#variableDefinitionList').append(stddevdef)
             $('#variableDefinitionList').append(iccdef)
-            $('#variableDefinitionList').append(clusterdeltadef)
+            $('#variableDefinitionList').append(clusterdeltameandef)
             $('#variableDefinitionList').append(mdef)
         } else if (testType == "conclusK") {
             $('#testDisplayNull').html("H<sub>0</sub>: &mu;<sub>1</sub> = &mu;<sub>2</sub>")
@@ -555,12 +556,12 @@ $(document).ready(function () {
     $(function () {
         $("#simulate").click(function () {
             treatmentAText();
-            stddevTextInput();
             treatmentBText();
             $('#samplesize').empty();
             console.log(testType)
             if (testType == "sup2") {
                 nratioText();
+                stddevTextInput();
                 meandiffText();
                 let zbeta = NormSInv(1 - beta)
                 let zalphaover2 = NormSInv(1 - (alpha / 2))
@@ -582,6 +583,7 @@ $(document).ready(function () {
                 nratioText();
                 meandiffText();
                 deltaTextInput();
+                stddevTextInput();
                 let zbeta = NormSInv(1 - beta)
                 let zalpha = NormSInv(1 - alpha)
                 let kplusone = parseFloat(nratio) + 1;
@@ -602,6 +604,7 @@ $(document).ready(function () {
                 nratioText();
                 absmeandiffText();
                 deltaTextInput();
+                stddevTextInput();
                 let zbeta = NormSInv(1 - beta)
                 let zalpha = NormSInv(1 - alpha)
                 let kplusone = parseFloat(nratio) + 1;
@@ -620,6 +623,7 @@ $(document).ready(function () {
                 }
             } else if (testType == "sup1") {
                 meandiffText_onesamp();
+                stddevTextInput();
                 let zoneminusbeta = NormSInv(1 - beta)
                 let zoneminusalphaover2 = NormSInv(1 - (alpha / 2))
                 let nNum = Math.pow(sigma, 2) * Math.pow((zoneminusbeta + zoneminusalphaover2), 2);
@@ -636,6 +640,7 @@ $(document).ready(function () {
             } else if (testType == "noninf1") {
                 deltaTextInput();
                 meandiffText_onesamp();
+                stddevTextInput();
                 let zoneminusbeta = NormSInv(1 - beta)
                 let zoneminusalpha = NormSInv(1 - alpha)
                 let nNum = Math.pow(sigma, 2) * Math.pow((zoneminusbeta + zoneminusalpha), 2);
@@ -652,6 +657,7 @@ $(document).ready(function () {
             } else if (testType == "equiv1") {
                 deltaTextInput();
                 absmeandiffText_onesamp();
+                stddevTextInput();
                 let zbetaovertwo = NormSInv(beta / 2)
                 let zalpha = NormSInv(alpha)
                 let nNum = Math.pow(sigma, 2) * Math.pow((zbetaovertwo + zalpha), 2);
@@ -711,7 +717,7 @@ $(document).ready(function () {
                 //Total n per arm = [(Za/2 + Zb)^2] [2 sigma^2] [1+(n-1)*ICC] / delta^2
 
                 clusterSizeInput()
-                stddev1TextInput()
+                stddevTextInput();
                 bigdeltainput()
                 iccinput()
 
