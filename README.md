@@ -27,6 +27,47 @@ For information on syntax and language features for the languages used, look her
 For information about the jQuery framework used, look here: 
 - jQuery - https://www.w3schools.com/jquery/
 
+### Functions Available For Use
+The following functions are already implemented and can be used by anyone wishing to add more functionality to the website.
+- `treatmentAText()`
+  - This function is used to capture what the user inputs for the text box representing treatment A. It is called when the simulate button is pressed. 
+- `treatmentBText()`
+  - This function is used to capture what the user inputs for the text box representing treatment B. It is called when the simulate button is pressed. 
+- `nratioText()`
+  - This function ensures that the user has entered a valid number for the ratio of participants in the two treatment groups. This function is called when the simulate button is pressed. You can only call this function if the user can enter this ratio as a parameter.
+- `meandiffText()`
+  - This function ensures that the user has entered a valid number for the mean difference between treatment groups. This function is called when the simulate button is pressed. You can only call this function if the user can enter the mean difference as a parameter.
+- `meandiffText_onesamp()`
+  - This function ensures that the user has entered a valid number for the mean difference between the standard and the treatment group. This function is called when the simulate button is pressed. You can only call this function if the user can enter the one sample mean difference as a parameter.
+- `absmeandiffText()`
+  - This function ensures that the user has entered a valid number for the absolute value mean difference between treatment groups. This function is called when the simulate button is pressed. You can only call this function if the user can enter the absolute value mean difference as a parameter.
+- `absmeandiffText_onesamp()`
+  - This function ensures that the user has entered a valid number for the mean difference between the standard and the treatment group. This function is called when the simulate button is pressed. You can only call this function if the user can enter the absolute value one sample mean difference as a parameter.
+- `deltaTextInput()`
+  - This function ensures that the user has entered a valid number for delta. This function is called when the simulate button is pressed. You can only call this function if the user can enter delta as a parameter.
+- `prop1Input()`
+  - This function ensures that the user has entered a valid number for proportion 1. This function is called when the simulate button is pressed. You can only call this function if the user can enter proportion 1 as a parameter.
+- `prop2Input()`
+  - This function ensures that the user has entered a valid number for proportion 2. This function is called when the simulate button is pressed. You can only call this function if the user can enter proportion 2 as a parameter.
+- `mu1Input()`
+  - This function ensures that the user has entered a valid number for mu 1. This function is called when the simulate button is pressed. You can only call this function if the user can enter mu 1 as a parameter.
+- `mu2Input()`
+  - This function ensures that the user has entered a valid number for mu 2. This function is called when the simulate button is pressed. You can only call this function if the user can enter mu 2 as a parameter.
+- `clusterSizeInput()`
+  - This function ensures that the user has entered a valid number for cluster size. This function is called when the simulate button is pressed. You can only call this function if the user can enter cluster size as a parameter.
+- `bigdeltainput()`
+  - This function ensures that the user has entered a valid number for big delta. This function is called when the simulate button is pressed. You can only call this function if the user can enter big delta as a parameter.
+- `iccinput()`
+  - This function ensures that the user has entered a valid number for ICC. This function is called when the simulate button is pressed. You can only call this function if the user can enter ICC as a parameter.
+- `kinput()`
+  - This function ensures that the user has entered a valid number for k. This function is called when the simulate button is pressed. You can only call this function if the user can enter k as a parameter.
+- `stddevTextInput()`
+  - This function ensures that the user has entered a valid number for standard deviation. This function is called when the simulate button is pressed. You can only call this function if the user can enter standard deviation as a parameter.
+- `stddev1TextInput()`
+  - This function ensures that the user has entered a valid number for standard deviation 1 (this is only used for tests requiring two standard deviations). This function is called when the simulate button is pressed. You can only call this function if the user can enter standard deviation 1 as a parameter.
+- `stddev2TextInput()`
+  - This function ensures that the user has entered a valid number for standard deviation 2 (this is only used for tests requiring two standard deviations). This function is called when the simulate button is pressed. You can only call this function if the user can enter standard deviation 2 as a parameter.
+
 ### Tutorials
 
 - Adding vocabulary words to the terms section
@@ -44,11 +85,45 @@ For information about the jQuery framework used, look here:
   3. Navigate to the script.js file and find the following function definition: `$('.testTypes').change(function ()`. Expand it with the + button to the left if need be. Add the following else if block:
      ```
      } else if (testType == <The ID value you assigned your test>) {
-       
+          $('#testDisplayNull').html("Null hypothesis goes here")
+          $('#testDisplayAlt').html("Alternative hypothesis goes here")
+          $('#hypotheses').append(The variable name for the parameter you want the user to enter goes here)
+          $('#variableDefinitionList').append(The variable name for the parameter definition you want the user to see goes here)
      }
      ```
      In the main block of the else if statment, you will add your null and alternative hypothesis, variable definitions that will appear on the right side of the page, and parameter inputs that appear on the left side of the page. To see an example of this, look at the current tests that exist in this function. 
-       - Note: Variables that represent definitions and parameter divs already exist. Simply look for your desired parameter values from lines 76-92, and your desired definitions from lines 95-106. Reference the variable names to add these sections to your test. 
+      - The available parameter divs for use are as follows. 
+        - Standard deviation: `stddevhtmldiv`
+        - Delta: `deltahtmldiv`
+        - Mean difference: `meandiffhtmldiv`
+        - Absolute value mean difference: `absmeandiffhtmldiv`
+        - Treatment 1 and 2 n ratio: `ratiohtmldiv`
+        - Mean difference for one sample: `meandiffhtmldiv_onesamp`
+        - Absolute value mean difference for one sample: `absmeandiffhtmldiv_onesamp`
+        - Proportion 1: `prop1div`
+        - Proportion 2: `prop2div`
+        - ICC: `iccdiv`
+        - K: `kdiv`
+        - Cluster size: `clustersizediv`
+        - Cluster test delta (big delta): `clusterdeltadiv`
+        - Mu 1: `m1div`
+        - Mu 2: `m2div`
+        - Standard deviation 1: `stddev1htmldiv`
+        - Standard deviation 2: `stddev2htmldiv`
+      - The available parameter definitions for use are as follows.
+        - Standard deviation: `stddevdef`
+        - Delta: `deltadef`
+        - Mean difference (1 sample): `meandiffdef_onesamp`
+        - Mean difference (2 sample): `meandiffdef_twosamp`
+        - Treatment group n ratio: `ratiodeff`
+        - K: `kdef`
+        - ICC: `iccdef`
+        - Cluster Size: `mdef`
+        - Proportion: `propdef`
+        - Cluster test delta (big delta) for proportions: `clusterdeltadef`
+        - Cluster test delta (big delta) for means: `clusterdeltameandef`
+        - Mean: `meandef`
+
   4. Navigate to the script.js file and find the following function definition: `$("#simulate").click(function () {`. Expand it with the + button to the left if need be. Add the following else if block:
      ```
      } else if (testType == <The ID value you assigned your test>) {
@@ -62,4 +137,4 @@ For information about the jQuery framework used, look here:
                   }
      }
      ```
-      This is the function that actually calculates your sample size. To access the parameter values inputted by the user, call one of the pre-defined functions that matches the parameter you need. For example, if your test involves a user-inputted standard deviation, call the function `stddevTextInput();`. The names of these functions can be found throughout the script.js file, and are denoted with comments. Use whatever variables you would like to make this calculation, but make sure your final sample size variable is named `n_total`. Your function should alert the user if they didn't input parameter values correctly. That is what the if-else block within the larger if-else block above does.
+      This is the function that actually calculates your sample size. To access the parameter values inputted by the user, call one of the pre-defined functions that matches the parameter you need. For example, if your test involves a user-inputted standard deviation, call the function `stddevTextInput();`. The names of these functions can be found throughout the script.js file, and are denoted with comments. Additionally, a list of all callable functions is above. Use whatever variables you would like to make this calculation, but make sure your final sample size variable is named `n_total`. Your function should alert the user if they didn't input parameter values correctly. That is what the if-else block within the larger if-else block above does.
