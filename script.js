@@ -289,6 +289,82 @@ $(document).ready(function () {
         {
             "term": "ICC",
             "definition": "Intraclass correlation coefficient which describes the extent of homogeneity of clusters"
+        },
+        {
+            "term": "Right censoring",
+            "definition": "T is called 'right-censored' if we don’t know its value but only that t > c for some c. For example, if we don’t know the exact date that a person contracted a disease (t), only that it was after month 6 of the study (c)"
+        },
+        {
+            "term": "Continuous outcome",
+            "definition": "An endpoint with infinitely many possibilities (i.e., amount of weight gain)"
+        },
+        {
+            "term": "Binary outcome",
+            "definition": "An endpoint which has two possibilities (i.e., dying or living)"
+        },
+        {
+            "term": "Time to event",
+            "definition": "The time elapsed between entry into the study and occurrence of some event"
+        },
+        {
+            "term": "Kaplan Meier Estimator",
+            "definition": "An estimator which can be used to estimate the probability of failure by any time t during the study."
+        },
+        {
+            "term": "Log rank statistic",
+            "definition": "In randomized trials, this is the usual statistic for comparing two survival functions."
+        },
+        {
+            "term": "Fully sequential trial",
+            "definition": "A trial which evaluates study results after each patient is accrued; endpoints must be ascertained quickly before the next patient is accrued."
+        },
+        {
+            "term": "Group sequential trial",
+            "definition": "A trial in which treatment comparisons are made after groups of patients have been accrued."
+        },
+        {
+            "term": "Rate",
+            "definition": "A measure of how quickly something of interest happens"
+        },
+        {
+            "term" : "Incidence",
+            "definition": "Measures new cases of a disease (or other outcome) that develop over a period of time"
+        },
+        {
+            "term": "Prevalence",
+            "definition": "Measures existing cases of a disease (or other outcome) at a particular point in time or over a period of time"
+        },
+        {
+            "term": "History",
+            "definition": "Events occurring between baseline and follow-up measurements could pose a threat to internal validity"
+        },
+        {
+            "term": "Testing",
+            "definition": "Effects on the outcome from having taken a measurement could pose a threat to internal validity"
+        },
+        {
+            "term": "Instrumentation",
+            "definition": "In multi-center studies, measurements may be made differently at different sites. This could pose a threat to internal validity"
+        },
+        {
+            "term": "Diagnostic bias",
+            "definition": "Determination of disease outcome may be influenced by exposure. This can pose a threat to internal validity "
+        },
+        {
+            "term": "Confounding",
+            "definition": "The ‘confusion of effects’ which can lead to incorrect associations between treatments; it can pose a threat to internal validity "
+        },
+        {
+            "term": "Differential information bias",
+            "definition": "Error or misclassification is associated with other variables; a threat to internal validity"
+        },
+        {
+            "term": "Non differential information bias",
+            "definition": "Error or misclassification which is random; often results in a bias towards the null."
+        },
+        {
+            "term": "Experimental mortality",
+            "definition": "Differential loss of participants from comparison groups which can result in threats to internal validity"
         }
     ]
 
