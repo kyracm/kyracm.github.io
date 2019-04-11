@@ -32,13 +32,13 @@ For information about the jQuery framework used, look here:
 - Adding vocabulary words to the terms section
   * Open the script.js file and go to the `var terms =` portion. Expand this section by pressing the + button to the left. 
   * Add the following code to add a term. The functions in place will add it to the existing vocabulary list in alphabetical order. The user will be able to find this term by searching now. Note: Be sure to separate added terms with a comma. 
-  ```
-    {
-        "term": "<Your desired term here>",
-        "definition": "<Your desired term's definition here>"
-    }
-  ```
-- Adding a test 
+    ```
+      {
+          "term": "<Your desired term here>",
+          "definition": "<Your desired term's definition here>"
+      }
+    ```
+- Adding a test (Note: the script.js file has been *extensively* commented. Refer to this file if you have questions about this process)
   1. The first step to adding a test type is to go to the index.html file and find the div with the id "typeOfTest"
   2. You should then add your desired test as an option. Be sure to give it an easily identifiable value attribute. The syntax is: `<option value="noSpacesIDValue">The test name that you would like to display to the user</option>`
   3. Navigate to the script.js file and find the following function definition: `$('.testTypes').change(function ()`. Expand it with the + button to the left if need be. Add the following else if block:
