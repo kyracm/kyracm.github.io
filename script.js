@@ -732,7 +732,7 @@ $(document).ready(function () {
                 } else {
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0*n_total + " subjects in your study per arm (" + n_total + " for " + trtGroupAName + " and " + n_total + " for " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + Math.round(((2.0 *  n_total) / clusterSize)*100.0)/100.0 + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in means of the outcome of interest from " + mu1 + " to " + mu2 + ", with 2-sided alpha level of " + alpha + ". </p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + Math.round(((2.0 *  n_total) / clusterSize)*100.0)/100.0 + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in means of the outcome of interest of at least " + bigdelta +  ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
 
             } else if (testType == "conclusK") {
