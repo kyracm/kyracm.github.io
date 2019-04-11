@@ -687,9 +687,9 @@ $(document).ready(function () {
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study per arm. Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0 * n_total + " subjects in your study per arm (" + n_total + " in " + trtGroupAName + " and " + n_total + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + (2.0 *  n_total) / clusterSize + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in rate of the specific disease from " + prop1 + " to " + prop2 + ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
             } else if (testType == "binclusK") {
                 //1+ [(Za/2 + Zb)^2] [p1(1-p1)/n+p2(1-p2)/n + k^2(p1^2 + p2^2)] / (p1-p2)^2
@@ -708,9 +708,9 @@ $(document).ready(function () {
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " clusters in your study per arm (" + n_half + " in " + trtGroupAName + " and " + n_half + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0 * n_total + " clusters in your study per arm (" + n_total + " in " + trtGroupAName + " and " + n_total + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a K of " + k + ",  " + 2.0 * n_total + " clusters (" + clusterSize + " in each cluster), representing about " + (n_total * clusterSize * 2.0) + " individuals, will provide " + power + "%  power of detecting a change in rate of the specific disease from " + prop1 + " to " + prop2 + ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
 
             } else if (testType == "conclusICC") {
@@ -731,9 +731,9 @@ $(document).ready(function () {
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " subjects in your study per arm (" + n_half + " for " + trtGroupAName + " and " + n_half + " for " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0*n_total + " subjects in your study per arm (" + n_total + " for " + trtGroupAName + " and " + n_total + " for " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + (2.0 *  n_total) / clusterSize + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in means of the outcome of interest from " + mu1 + " to " + mu2 + ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
 
             } else if (testType == "conclusK") {
@@ -756,9 +756,9 @@ $(document).ready(function () {
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
-                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + n_total + " clusters in your study per arm (" + n_half + " in " + trtGroupAName + " and " + n_half + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
+                    $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0 * n_total + " clusters in your study per arm (" + n_total + " in " + trtGroupAName + " and " + n_total + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    // $('#samplesize').append("<p id = 'sampsizepar'>If there is truly no difference between " + trtGroupAName + " and " + trtGroupBName + ", then " + n_total + " subjects (" + npairs + " pairs of subjects) are needed for a one sided t-test to detect superiority of " + trtGroupAName + " over " + trtGroupBName + ". This provides " + power + "% power and a type one error rate of " + alpha + ".</p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a K of " + k + ",  " + 2.0 * n_total + " clusters (" + clusterSize + " in each cluster), representing about " + (n_total * clusterSize * 2.0) + " individuals, will provide " + power + "%  power of detecting a change in means of the outcome of interest from " + mu1 + " to " + mu2 + ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
             } else {
                 $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
