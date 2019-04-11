@@ -964,6 +964,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for proportion 1 and assigns
+    //this number to the global variable for proportion 1.
     var prop1Input = function () {
         prop1 = $('#prop1text').val();
         var slash = 0;
@@ -993,6 +995,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for proportion 2 and assigns
+    //this number to the global variable for proportion 2.
     var prop2Input = function () {
         prop2 = $('#prop2text').val();
         var slash = 0;
@@ -1022,6 +1026,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for mu 1 and assigns
+    //this number to the global variable for mu 1.
     var mu1Input = function () {
         mu1 = $('#m1text').val();
         var slash = 0;
@@ -1051,6 +1057,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for mu 2 and assigns
+    //this number to the global variable for mu 2.
     var mu2Input = function () {
         mu2 = $('#m2text').val();
         var slash = 0;
@@ -1080,6 +1088,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for cluster size and assigns
+    //this number to the global variable for cluster size.
     var clusterSizeInput = function () {
         clusterSize = $('#clustersizetext').val();
         var slash = 0;
@@ -1109,6 +1119,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for big delta (cluster designs) and assigns
+    //this number to the global variable for big delta.
     var bigdeltainput = function () {
         bigdelta = $('#clusterdeltatext').val();
         var slash = 0;
@@ -1138,6 +1150,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for ICC and assigns
+    //this number to the global variable for ICC.
     var iccinput = function () {
         icc = $('#icctext').val();
         var slash = 0;
@@ -1167,6 +1181,8 @@ $(document).ready(function () {
         }
     };
 
+    //This function makes sure the user has typed in a valid floating point number for K and assigns
+    //this number to the global variable for K.
     var kinput = function () {
         k = $('#ktext').val();
         var slash = 0;
@@ -1324,7 +1340,7 @@ $(document).ready(function () {
         });
     });
 
-    //This function registers whether a user has selected standard deviation or variance, and stores this
+    //These functions register whether a user has selected standard deviation or variance, and stores this
     //as a global variable. This is used in the standard deviation function. 
     $(function () {
         $('#hypotheses').on('click', '.stddevpower', function () {
