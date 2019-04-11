@@ -682,14 +682,14 @@ $(document).ready(function () {
                 let zalphaovertwo = NormSInv(alpha / 2.0)
                 let nnum = Math.pow(zalphaovertwo + zbeta, 2) * ((prop1 * (1 - prop1)) + (prop2 * (1 - prop2))) * ((1 + (clusterSize - 1)) * icc)
                 let nden = Math.pow(bigdelta, 2);
-                let n_half = Math.ceil(0.5*(nnum / nden));
-                let n_total = 2 * n_half;
+                let n_total = Math.ceil(nnum / nden)
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0 * n_total + " subjects in your study per arm (" + n_total + " in " + trtGroupAName + " and " + n_total + " in " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + (2.0 *  n_total) / clusterSize + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in rate of the specific disease from " + prop1 + " to " + prop2 + ", with 2-sided alpha level of " + alpha + ". </p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + Math.round(((2.0 *  n_total) / clusterSize)*100.0)/100.0 + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in rate of the specific disease from " + prop1 + " to " + prop2 + ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
             } else if (testType == "binclusK") {
                 //1+ [(Za/2 + Zb)^2] [p1(1-p1)/n+p2(1-p2)/n + k^2(p1^2 + p2^2)] / (p1-p2)^2
@@ -702,9 +702,8 @@ $(document).ready(function () {
                 let zalphaovertwo = NormSInv(alpha / 2.0)
                 let nnum = Math.pow(zalphaovertwo + zbeta, 2) * ((prop1 * (1 - prop1)/clusterSize) + (prop2 * (1 - prop2)/clusterSize) + (Math.pow(k,2)*(Math.pow(prop1,2) + Math.pow(prop2,2))))
                 let nden = Math.pow(prop1 - prop2, 2);
-                let n_half = Math.ceil(0.5*(1 + (nnum / nden)));
-                let n_total = 2 * n_half;
-
+                let n_total =Math.ceil(1 + (nnum / nden))
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
@@ -725,15 +724,15 @@ $(document).ready(function () {
                 let zalphaovertwo = NormSInv(alpha / 2.0)
                 let nnum = Math.pow(zalphaovertwo + zbeta, 2) * 2 * Math.pow(sigma, 2) * (1 + ((clusterSize-1) * icc))
                 let nden = Math.pow(bigdelta, 2);
-                let n_half = Math.ceil(0.5*(nnum / nden));
-                let n_total = 2 * n_half;
+                let n_total = Math.ceil(nnum / nden)
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
 
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")
                 } else {
                     $('#samplesize').append("<p id = 'sampsizenum'>You need at least " + 2.0*n_total + " subjects in your study per arm (" + n_total + " for " + trtGroupAName + " and " + n_total + " for " + trtGroupBName + "). Note: sample size calculations have been rounded up to nearest integer value.</p>")
                     $('#samplesize').append("<h2>Sample statistics paragraph</h2>")
-                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + (2.0 *  n_total) / clusterSize + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in means of the outcome of interest from " + mu1 + " to " + mu2 + ", with 2-sided alpha level of " + alpha + ". </p>")
+                    $('#samplesize').append("<p id = 'sampsizepar'>Assuming a ICC of " + icc + ",  " + Math.round(((2.0 *  n_total) / clusterSize)*100.0)/100.0 + " clusters (" + clusterSize + " in each cluster), representing about " + n_total*2.0 + " individuals, will provide " + power + "%  power of detecting a change in means of the outcome of interest from " + mu1 + " to " + mu2 + ", with 2-sided alpha level of " + alpha + ". </p>")
                 }
 
             } else if (testType == "conclusK") {
@@ -750,8 +749,8 @@ $(document).ready(function () {
                 let zalphaovertwo = NormSInv(alpha / 2.0)
                 let nnum = Math.pow(zalphaovertwo + zbeta, 2) * ((Math.pow(sigma1, 2)/clusterSize) + (Math.pow(sigma2,2)/clusterSize) + (Math.pow(k,2)*(Math.pow(mu1,2) + Math.pow(mu2,2))))
                 let nden = Math.pow(mu1 - mu2, 2);
-                let n_half = Math.ceil(0.5*(1 + (nnum / nden)));
-                let n_total = 2 * n_half;
+                let n_total = Math.ceil(1 + (nnum / nden));
+                $('#samplesize').append("<h2>Sample Size Breakdown</h2>")
 
                 if (n_total == 0 || isNaN(parseFloat(n_total))) {
                     $('#samplesize').append("<p id = 'sampsizenum'>Please correctly fill out the parameter values.</p>")

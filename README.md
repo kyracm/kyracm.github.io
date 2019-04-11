@@ -2,6 +2,10 @@
 
 The purpose of this project is to make an interface that can be used for making power and sample size calculations in various statistical plans. You can access the website at: 
 
+samplesizecalc.com
+
+or at: 
+
 kyracm.github.io
 
 In the main sample size calculator tab, the user can select a test to simulate. Upon selecting the desired test, the null and alternative hypothesis will populate and the user can enter the numbers they are using for their study. Pressing "Simulate Study" will calculate the minimum sample size that the user should obtain, and a breakdown of that calculation and a sample statistics paragraph will appear. 
