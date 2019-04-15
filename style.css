@@ -33,7 +33,8 @@ h2 {
     width: 25%;
     color: #615E65;
     background-color: #C6C3B9;
-
+    border: thin solid; 
+    border-color: #C6C3B9;
 }
 
 #sampsizetaboption {
